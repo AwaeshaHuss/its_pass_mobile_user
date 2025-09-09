@@ -5,13 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:restart_app/restart_app.dart';
 import 'package:uber_users_app/appInfo/app_info.dart';
 import 'package:uber_users_app/appInfo/auth_provider.dart';
 import 'package:uber_users_app/authentication/register_screen.dart';
@@ -392,61 +390,62 @@ class _HomePageState extends State<HomePage> {
   }
 
   initializeGeoFireListener() {
-    Geofire.initialize("onlineDrivers");
+    // TODO: Temporarily commented out Geofire functionality due to compatibility issues
+    // Geofire.initialize("onlineDrivers");
 
     // Guard against no drivers collection
-    Geofire.queryAtLocation(currentPositionOfUser?.latitude ?? 0.0,
-            currentPositionOfUser?.longitude ?? 0.0, 42)
-        ?.listen((driverEvent) {
-      if (driverEvent != null) {
-        var onlineDriverChild = driverEvent["callBack"];
+    // Geofire.queryAtLocation(currentPositionOfUser?.latitude ?? 0.0,
+    //         currentPositionOfUser?.longitude ?? 0.0, 42)
+    //     ?.listen((driverEvent) {
+    //   if (driverEvent != null) {
+    //     var onlineDriverChild = driverEvent["callBack"];
 
-        switch (onlineDriverChild) {
-          case Geofire.onKeyEntered:
-            if (driverEvent["key"] != null &&
-                driverEvent["latitude"] != null &&
-                driverEvent["longitude"] != null) {
-              OnlineNearbyDrivers onlineNearbyDrivers = OnlineNearbyDrivers();
-              onlineNearbyDrivers.uidDriver = driverEvent["key"];
-              onlineNearbyDrivers.latDriver = driverEvent["latitude"];
-              onlineNearbyDrivers.lngDriver = driverEvent["longitude"];
-              ManageDriversMethods.nearbyOnlineDriversList
-                  .add(onlineNearbyDrivers);
+    //     switch (onlineDriverChild) {
+    //       case Geofire.onKeyEntered:
+    //         if (driverEvent["key"] != null &&
+    //             driverEvent["latitude"] != null &&
+    //             driverEvent["longitude"] != null) {
+    //           OnlineNearbyDrivers onlineNearbyDrivers = OnlineNearbyDrivers();
+    //           onlineNearbyDrivers.uidDriver = driverEvent["key"];
+    //           onlineNearbyDrivers.latDriver = driverEvent["latitude"];
+    //           onlineNearbyDrivers.lngDriver = driverEvent["longitude"];
+    //           ManageDriversMethods.nearbyOnlineDriversList
+    //               .add(onlineNearbyDrivers);
 
-              if (nearbyOnlineDriversKeysLoaded == true) {
-                updateAvailableNearbyOnlineDriversOnMap();
-              }
-            }
-            break;
+    //           if (nearbyOnlineDriversKeysLoaded == true) {
+    //             updateAvailableNearbyOnlineDriversOnMap();
+    //           }
+    //         }
+    //         break;
 
-          case Geofire.onKeyExited:
-            if (driverEvent["key"] != null) {
-              ManageDriversMethods.removeDriverFromList(driverEvent["key"]);
-              updateAvailableNearbyOnlineDriversOnMap();
-            }
-            break;
+    //       case Geofire.onKeyExited:
+    //         if (driverEvent["key"] != null) {
+    //           ManageDriversMethods.removeDriverFromList(driverEvent["key"]);
+    //           updateAvailableNearbyOnlineDriversOnMap();
+    //         }
+    //         break;
 
-          case Geofire.onKeyMoved:
-            if (driverEvent["key"] != null &&
-                driverEvent["latitude"] != null &&
-                driverEvent["longitude"] != null) {
-              OnlineNearbyDrivers onlineNearbyDrivers = OnlineNearbyDrivers();
-              onlineNearbyDrivers.uidDriver = driverEvent["key"];
-              onlineNearbyDrivers.latDriver = driverEvent["latitude"];
-              onlineNearbyDrivers.lngDriver = driverEvent["longitude"];
-              ManageDriversMethods.updateOnlineNearbyDriversLocation(
-                  onlineNearbyDrivers);
-              updateAvailableNearbyOnlineDriversOnMap();
-            }
-            break;
+    //       case Geofire.onKeyMoved:
+    //         if (driverEvent["key"] != null &&
+    //             driverEvent["latitude"] != null &&
+    //             driverEvent["longitude"] != null) {
+    //           OnlineNearbyDrivers onlineNearbyDrivers = OnlineNearbyDrivers();
+    //           onlineNearbyDrivers.uidDriver = driverEvent["key"];
+    //           onlineNearbyDrivers.latDriver = driverEvent["latitude"];
+    //           onlineNearbyDrivers.lngDriver = driverEvent["longitude"];
+    //           ManageDriversMethods.updateOnlineNearbyDriversLocation(
+    //               onlineNearbyDrivers);
+    //           updateAvailableNearbyOnlineDriversOnMap();
+    //         }
+    //         break;
 
-          case Geofire.onGeoQueryReady:
-            nearbyOnlineDriversKeysLoaded = true;
-            updateAvailableNearbyOnlineDriversOnMap();
-            break;
-        }
-      }
-    });
+    //       case Geofire.onGeoQueryReady:
+    //         nearbyOnlineDriversKeysLoaded = true;
+    //         updateAvailableNearbyOnlineDriversOnMap();
+    //         break;
+    //     }
+    //   }
+    // });
   }
 
   makeTripRequest() {
@@ -553,7 +552,7 @@ class _HomePageState extends State<HomePage> {
 
       if (status == "accepted") {
         displayTripDetailsContainer();
-        Geofire.stopListener();
+        // Geofire.stopListener(); // TODO: Temporarily commented out
 
         setState(() {
           markerSet.removeWhere(
@@ -582,7 +581,7 @@ class _HomePageState extends State<HomePage> {
           tripStreamSubscription = null;
 
           resetAppNow();
-          Restart.restartApp();
+          // Restart.restartApp(); // TODO: Temporarily commented out
         }
       }
     });
