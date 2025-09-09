@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:restart_app/restart_app.dart';
 
 class InfoDialog extends StatelessWidget {
   final String? title, description;
@@ -50,7 +49,7 @@ class InfoDialog extends StatelessWidget {
                     onPressed: () {
 
                       Navigator.pop(context);
-                      Restart.restartApp();
+                      // Restart.restartApp(); // TODO: Temporarily commented out
                       
                     },
                     style: ElevatedButton.styleFrom(

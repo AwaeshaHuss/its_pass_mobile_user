@@ -1,4 +1,4 @@
-# Uber Clone - Users App
+# Its Pass - Users App
 
 A Flutter-based Uber clone application for users to book rides, with Firebase integration and real-time features.
 
