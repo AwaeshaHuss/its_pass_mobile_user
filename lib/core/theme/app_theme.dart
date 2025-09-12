@@ -7,12 +7,15 @@ class AppTheme {
   static const Color primaryLightColor = Color(0xFF4CAF50);
   static const Color primaryDarkColor = Color(0xFF1B5E20);
   static const Color accentColor = Color(0xFFFF9800);
-  static const Color backgroundColor = Color(0xFFF5F5F5);
-  static const Color surfaceColor = Color(0xFFFFFFFF);
-  static const Color errorColor = Color(0xFFD32F2F);
+  static const Color errorColor = Color(0xFFE53E3E);
+  static const Color successColor = Color(0xFF38A169);
+  static const Color warningColor = Color(0xFFFF8C00);
+  static const Color infoColor = Color(0xFF3182CE);
   static const Color textPrimaryColor = Color(0xFF212121);
   static const Color textSecondaryColor = Color(0xFF757575);
   static const Color dividerColor = Color(0xFFE0E0E0);
+  static const Color backgroundColor = Color(0xFFF5F5F5);
+  static const Color surfaceColor = Color(0xFFFFFFFF);
 
   // Gradients
   static const LinearGradient primaryGradient = LinearGradient(

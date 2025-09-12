@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:uber_users_app/core/constants/app_dimensions.dart';
+import 'package:uber_users_app/core/theme/app_theme.dart';
 
 class SignOutDialog extends StatelessWidget {
   final String? title;
@@ -12,81 +15,123 @@ class SignOutDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusL),
       ),
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.transparent,
       child: Container(
-        width: double.infinity,
+        width: 320.w,
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(6),
+          color: AppTheme.surfaceColor,
+          borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.15),
+              blurRadius: AppDimensions.elevationL,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 12,
+          padding: EdgeInsets.all(AppDimensions.paddingL),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Icon
+              Container(
+                width: 60.w,
+                height: 60.w,
+                decoration: BoxDecoration(
+                  color: AppTheme.errorColor.withOpacity(0.1),
+                  shape: BoxShape.circle,
                 ),
-                Text(
-                  title ?? 'Sign Out',
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
+                child: Icon(
+                  Icons.logout,
+                  color: AppTheme.errorColor,
+                  size: AppDimensions.iconSizeL,
                 ),
-                const SizedBox(
-                  height: 27,
+              ),
+              
+              SizedBox(height: AppDimensions.paddingL),
+              
+              // Title
+              Text(
+                title ?? 'Logout',
+                style: AppTheme.headingStyle.copyWith(
+                  color: AppTheme.textPrimaryColor,
+                  fontWeight: FontWeight.bold,
                 ),
-                Text(
-                  description ?? 'Are you sure you want to sign out?',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.black),
+              ),
+              
+              SizedBox(height: AppDimensions.paddingM),
+              
+              // Description
+              Text(
+                description ?? 'Are you sure you want to logout?',
+                textAlign: TextAlign.center,
+                style: AppTheme.bodyStyle.copyWith(
+                  color: AppTheme.textSecondaryColor,
                 ),
-                const SizedBox(
-                  height: 32,
-                ),
-                SizedBox(
-                  width: 202,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      onSignOut(); // Perform sign-out operation
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6),
+              ),
+              
+              SizedBox(height: AppDimensions.paddingXL),
+              
+              // Buttons
+              Row(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: AppDimensions.buttonHeightM,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: AppTheme.dividerColor.withOpacity(0.3),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                          ),
+                        ),
+                        child: Text(
+                          "Cancel",
+                          style: AppTheme.bodyStyle.copyWith(
+                            color: AppTheme.textPrimaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
                     ),
-                    child: const Text(
-                      "Sign Out",
-                      style: TextStyle(color: Colors.white),
+                  ),
+                  
+                  SizedBox(width: AppDimensions.paddingM),
+                  
+                  Expanded(
+                    child: SizedBox(
+                      height: AppDimensions.buttonHeightM,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          onSignOut();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppTheme.errorColor,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                          ),
+                        ),
+                        child: Text(
+                          "Logout",
+                          style: AppTheme.bodyStyle.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                SizedBox(
-                  width: 202,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pop(context); // Close the dialog
-                    },
-                    child: const Text(
-                      "Cancel",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-              ],
-            ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

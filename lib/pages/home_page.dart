@@ -628,59 +628,48 @@ class _HomePageState extends State<HomePage> {
                 duration: const Duration(milliseconds: 150),
                 child: Container(
                   height: searchContainerHeight,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
+                  decoration: BoxDecoration(
+                    color: AppTheme.surfaceColor,
                     borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15),
+                      topLeft: Radius.circular(AppDimensions.radiusXL),
+                      topRight: Radius.circular(AppDimensions.radiusXL),
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 15.0,
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: AppDimensions.elevationL,
                         spreadRadius: 0.5,
-                        offset: Offset(0.7, 0.7),
+                        offset: const Offset(0, -2),
                       ),
                     ],
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 24, vertical: 18),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: AppDimensions.paddingL, 
+                        vertical: AppDimensions.paddingL),
                     child: Column(
                       children: [
-                        Row(
-                          children: [
-                            const Icon(Icons.add_location_alt_outlined,
-                                color: Colors.grey),
-                            const SizedBox(width: 12.0),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  "From",
-                                  style: TextStyle(
-                                      color: Colors.grey, fontSize: 12),
-                                ),
-                                Text(
-                                  userAddress ?? 'Unknown location',
-                                  style: const TextStyle(
-                                      color: Colors.grey, fontSize: 14),
-                                ),
-                              ],
-                            ),
-                          ],
+                        // From Location
+                        _buildLocationRow(
+                          icon: Icons.radio_button_checked,
+                          iconColor: AppTheme.primaryColor,
+                          label: "From",
+                          address: userAddress ?? 'Unknown location',
                         ),
 
-                        const SizedBox(height: 10.0),
+                        SizedBox(height: AppDimensions.paddingM),
 
-                        const Divider(
+                        Divider(
                           height: 1,
-                          thickness: 2,
-                          color: Colors.grey,
+                          thickness: 1,
+                          color: AppTheme.dividerColor,
+                          indent: AppDimensions.paddingXL,
+                          endIndent: AppDimensions.paddingXL,
                         ),
 
-                        const SizedBox(height: 16.0),
+                        SizedBox(height: AppDimensions.paddingM),
 
+                        // To Location
                         GestureDetector(
                           onTap: () async {
                             var responseFromSearchPage = await Navigator.push(
@@ -693,55 +682,34 @@ class _HomePageState extends State<HomePage> {
                               displayUserRideDetailsContainer();
                             }
                           },
-                          child: const Row(
-                            children: [
-                              Icon(Icons.add_location_alt_outlined,
-                                  color: Colors.grey),
-                              SizedBox(width: 12.0),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "To",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 12),
-                                  ),
-                                  Text(
-                                    "Where would you like to go?",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 14),
-                                  ),
-                                ],
-                              ),
-                            ],
+                          child: _buildLocationRow(
+                            icon: Icons.location_on,
+                            iconColor: AppTheme.errorColor,
+                            label: "To",
+                            address: "Where would you like to go?",
+                            isClickable: true,
                           ),
                         ),
 
-                        const SizedBox(height: 10.0),
+                        SizedBox(height: AppDimensions.paddingL),
 
-                        const Divider(
-                          height: 1,
-                          thickness: 2,
-                          color: Colors.grey,
-                        ),
-
-                        const SizedBox(height: 16.0),
-
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (c) =>
-                                      const SearchDestinationPlace()));
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
-                              textStyle: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold)),
-                          child: const Text(
-                            "Request a Ride",
-                            style: TextStyle(color: Colors.white),
+                        // Request Ride Button
+                        SizedBox(
+                          width: double.infinity,
+                          height: AppDimensions.buttonHeightL,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (c) =>
+                                        const SearchDestinationPlace()));
+                            },
+                            style: AppTheme.primaryButtonStyle,
+                            child: Text(
+                              "Request a Ride",
+                              style: AppTheme.buttonTextStyle,
+                            ),
                           ),
                         ),
                       ],
@@ -753,6 +721,67 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+    );
+  }
+  
+  Widget _buildLocationRow({
+    required IconData icon,
+    required Color iconColor,
+    required String label,
+    required String address,
+    bool isClickable = false,
+  }) {
+    return Row(
+      children: [
+        Container(
+          width: AppDimensions.iconSizeL + 8,
+          height: AppDimensions.iconSizeL + 8,
+          decoration: BoxDecoration(
+            color: iconColor.withOpacity(0.1),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(
+            icon,
+            size: AppDimensions.iconSizeM,
+            color: iconColor,
+          ),
+        ),
+        SizedBox(width: AppDimensions.paddingM),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: AppTheme.captionStyle.copyWith(
+                  color: AppTheme.textSecondaryColor,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              SizedBox(height: AppDimensions.paddingXS),
+              Text(
+                address,
+                style: AppTheme.bodyStyle.copyWith(
+                  color: isClickable 
+                      ? AppTheme.textSecondaryColor 
+                      : AppTheme.textPrimaryColor,
+                  fontWeight: isClickable 
+                      ? FontWeight.normal 
+                      : FontWeight.w500,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        ),
+        if (isClickable)
+          Icon(
+            Icons.arrow_forward_ios,
+            size: AppDimensions.iconSizeS,
+            color: AppTheme.textSecondaryColor,
+          ),
+      ],
     );
   }
 }

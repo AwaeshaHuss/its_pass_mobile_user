@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
 import 'package:uber_users_app/authentication/user_information_screen.dart';
+import 'package:uber_users_app/core/constants/app_dimensions.dart';
+import 'package:uber_users_app/core/theme/app_theme.dart';
 import 'package:uber_users_app/methods/common_methods.dart';
 import 'package:uber_users_app/pages/home_page.dart';
 
@@ -21,100 +24,117 @@ class _OTPScreenState extends State<OTPScreen> {
     // TODO: Replace with BLoC pattern for OTP verification
     return SafeArea(
       child: Scaffold(
+        backgroundColor: AppTheme.backgroundColor,
         body: Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 35),
+            padding: EdgeInsets.symmetric(
+              vertical: AppDimensions.paddingXL,
+              horizontal: AppDimensions.paddingL,
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
+                Text(
                   'Verification',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: AppTheme.headingStyle,
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text(
-                  'Enter The OPT Code Sent To Your Phone Number',
+                SizedBox(height: AppDimensions.paddingM),
+                Text(
+                  'Enter the OTP code sent to your phone number',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+                  style: AppTheme.bodyStyle.copyWith(
+                    color: AppTheme.textSecondaryColor,
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: AppDimensions.paddingXL),
 
-                // pinput
+                // OTP Input
                 Pinput(
                   length: 6,
                   showCursor: true,
                   defaultPinTheme: PinTheme(
-                    width: 60,
-                    height: 60,
+                    width: 50.w,
+                    height: 50.h,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                      color: AppTheme.surfaceColor,
+                      border: Border.all(
+                        color: AppTheme.dividerColor,
+                        width: 2,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: AppDimensions.elevationS,
+                          offset: const Offset(0, 1),
+                        ),
+                      ],
                     ),
-                    textStyle: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.w600),
+                    textStyle: AppTheme.titleStyle,
+                  ),
+                  focusedPinTheme: PinTheme(
+                    width: 50.w,
+                    height: 50.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                      color: AppTheme.surfaceColor,
+                      border: Border.all(
+                        color: AppTheme.primaryColor,
+                        width: 2,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppTheme.primaryColor.withOpacity(0.1),
+                          blurRadius: AppDimensions.elevationM,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    textStyle: AppTheme.titleStyle.copyWith(
+                      color: AppTheme.primaryColor,
+                    ),
                   ),
                   onCompleted: (value) {
                     setState(() {
                       smsCode = value;
                     });
-
-                    // verify OTP
                     verifyOTP(smsCode: smsCode!);
                   },
                 ),
 
-                const SizedBox(
-                  height: 25,
-                ),
-
+                SizedBox(height: AppDimensions.paddingXXL),
+                
                 // TODO: Replace with BLoC state management
                 const SizedBox.shrink(),
 
-                const SizedBox(
-                  height: 25,
-                ),
+                SizedBox(height: AppDimensions.paddingXL),
 
-                const Text(
-                  'Didn\'t Receive Any Code?',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+                Text(
+                  'Didn\'t receive any code?',
+                  style: AppTheme.bodyStyle.copyWith(
+                    color: AppTheme.textSecondaryColor,
                   ),
                 ),
 
-                const SizedBox(
-                  height: 16,
-                ),
+                SizedBox(height: AppDimensions.paddingM),
 
                 SizedBox(
-                  width: MediaQuery.of(context).size.width *
-                      0.3, // Set button width
-                  height: 50, // Fixed button height
+                  width: 120.w,
+                  height: AppDimensions.buttonHeightM,
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey.shade400, // Button color
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(10), // Rounded corners
+                    style: AppTheme.secondaryButtonStyle.copyWith(
+                      minimumSize: MaterialStateProperty.all(
+                        Size(120.w, AppDimensions.buttonHeightM),
                       ),
                     ),
-                    onPressed: () {},
-                    child: const Text(
+                    onPressed: () {
+                      // TODO: Implement resend OTP functionality
+                    },
+                    child: Text(
                       "Resend",
-                      style: TextStyle(
-                        fontSize: 16, // Button text size
-                        color: Colors.black, // Button text color
+                      style: AppTheme.bodyStyle.copyWith(
+                        color: AppTheme.primaryColor,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),

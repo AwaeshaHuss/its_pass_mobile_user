@@ -20,11 +20,11 @@ class AppDimensions {
   static double get fontSizeHeading => 28.sp;
 
   // Icon Sizes
-  static double get iconSizeXS => 16.w;
-  static double get iconSizeS => 20.w;
-  static double get iconSizeM => 24.w;
-  static double get iconSizeL => 28.w;
+  static double get iconSizeS => 16.w;
+  static double get iconSizeM => 20.w;
+  static double get iconSizeL => 24.w;
   static double get iconSizeXL => 32.w;
+  static double get iconSizeXXL => 48.w;
 
   // Button Heights
   static double get buttonHeightS => 36.h;

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:uber_users_app/core/constants/app_dimensions.dart';
+import 'package:uber_users_app/core/theme/app_theme.dart';
 
 class LoadingDialog extends StatelessWidget {
   final String messageText;
@@ -12,34 +15,39 @@ class LoadingDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusL),
       ),
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.transparent,
       child: Container(
-        margin: const EdgeInsets.all(15),
-        width: double.infinity,
+        width: 280.w,
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(5),
+          color: AppTheme.surfaceColor,
+          borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.15),
+              blurRadius: AppDimensions.elevationL,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(AppDimensions.paddingL),
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              const SizedBox(
-                width: 5,
+              CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
+                strokeWidth: 3,
               ),
-              const CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
-              ),
-              const SizedBox(
-                width: 8,
-              ),
-              Text(
-                messageText,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.black,
+              SizedBox(width: AppDimensions.paddingL),
+              Expanded(
+                child: Text(
+                  messageText,
+                  style: AppTheme.bodyStyle.copyWith(
+                    color: AppTheme.textPrimaryColor,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             ],

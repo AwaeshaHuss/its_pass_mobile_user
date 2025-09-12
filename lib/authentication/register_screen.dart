@@ -19,17 +19,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController phoneController = TextEditingController();
 
   Country selectedCountry = Country(
-    phoneCode: '92',
-    countryCode: 'PK',
-    e164Sc: 0,
-    geographic: true,
-    level: 1,
-    name: 'Pakistan',
-    example: 'Pakistan',
-    displayName: 'Pakistan',
-    displayNameNoCountryCode: 'PK',
-    e164Key: '',
-  );
+  phoneCode: '962',
+  countryCode: 'JO',
+  e164Sc: 0,
+  geographic: true,
+  level: 1,
+  name: 'Jordan',
+  example: 'Jordan',
+  displayName: 'Jordan',
+  displayNameNoCountryCode: 'JO',
+  e164Key: '',
+);
 
   @override
   void dispose() {

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:uber_users_app/core/constants/app_dimensions.dart';
+import 'package:uber_users_app/core/theme/app_theme.dart';
 import 'package:uber_users_app/global/global_var.dart';
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -30,132 +33,143 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        title: const Text(
+        backgroundColor: AppTheme.primaryColor,
+        elevation: AppDimensions.elevationM,
+        centerTitle: true,
+        title: Text(
           "My Profile",
-          style: TextStyle(fontSize: 15, color: Colors.white),
+          style: AppTheme.titleStyle.copyWith(color: Colors.white),
         ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            //image
-            Container(
-              width: 150,
-              height: 150,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.grey,
+        child: Padding(
+          padding: EdgeInsets.all(AppDimensions.paddingL),
+          child: Column(
+            children: [
+              SizedBox(height: AppDimensions.paddingXL),
+              
+              // Profile Image
+              Container(
+                width: 120.w,
+                height: 120.w,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppTheme.surfaceColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: AppDimensions.elevationL,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: CircleAvatar(
+                  radius: 60.w,
+                  backgroundColor: AppTheme.primaryLightColor.withOpacity(0.1),
+                  child: Image.asset(
+                    "assets/images/avatarman.png",
+                    width: 80.w,
+                    height: 80.w,
+                  ),
+                ),
               ),
-              child: CircleAvatar(
-                child: Image.asset("assets/images/avatarman.png"),
-              ),
-            ),
 
-            const SizedBox(
-              height: 16,
-            ),
+              SizedBox(height: AppDimensions.paddingXXL),
 
-            //driver name
-            Padding(
-              padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 8),
-              child: TextField(
+              // Profile Information
+              _buildProfileField(
                 controller: nameTextEditingController,
-                textAlign: TextAlign.start,
-                enabled: false,
-                style: const TextStyle(fontSize: 16, color: Colors.black),
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white24,
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.black,
-                      width: 2,
-                    ),
-                  ),
-                  prefixIcon: Icon(
-                    Icons.person,
-                    color: Colors.black,
-                  ),
-                ),
+                label: "Full Name",
+                icon: Icons.person,
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            //driver phone
-            Padding(
-              padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 4),
-              child: TextField(
+              
+              SizedBox(height: AppDimensions.paddingL),
+              
+              _buildProfileField(
                 controller: phoneTextEditingController,
-                textAlign: TextAlign.start,
-                enabled: false,
-                style: const TextStyle(fontSize: 16, color: Colors.black),
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white24,
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.black,
-                      width: 2,
-                    ),
-                  ),
-                  prefixIcon: Icon(
-                    Icons.phone_android_outlined,
-                    color: Colors.black,
-                  ),
-                ),
+                label: "Phone Number",
+                icon: Icons.phone,
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ), 
-            //driver email
-            Padding(
-              padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 4),
-              child: TextField(
+              
+              SizedBox(height: AppDimensions.paddingL),
+              
+              _buildProfileField(
                 controller: emailTextEditingController,
-                textAlign: TextAlign.start,
-                enabled: false,
-                style: const TextStyle(fontSize: 16, color: Colors.black),
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white24,
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.white,
-                      width: 2,
-                    ),
-                  ),
-                  prefixIcon: Icon(
-                    Icons.email,
-                    color: Colors.black,
+                label: "Email Address",
+                icon: Icons.email,
+              ),
+              
+              SizedBox(height: AppDimensions.paddingXXL),
+              
+              // Edit Profile Button
+              SizedBox(
+                width: double.infinity,
+                height: AppDimensions.buttonHeightL,
+                child: ElevatedButton(
+                  onPressed: () {
+                    // TODO: Implement edit profile functionality
+                  },
+                  style: AppTheme.primaryButtonStyle,
+                  child: Text(
+                    "Edit Profile",
+                    style: AppTheme.buttonTextStyle,
                   ),
                 ),
               ),
-            ),
 
-            // const SizedBox(
-            //   height: 12,
-            // ),
-
-            // //logout btn
-            // ElevatedButton(
-            //   onPressed: () {
-            //     FirebaseAuth.instance.signOut();
-            //     Navigator.push(context,
-            //         MaterialPageRoute(builder: (c) => const LoginScreen()));
-            //   },
-            //   style: ElevatedButton.styleFrom(
-            //       backgroundColor: Colors.pink,
-            //       padding: const EdgeInsets.symmetric(
-            //           horizontal: 80, vertical: 18)),
-            //   child: const Text("Logout"),
-            // ),
-          ],
+            ],
+          ),
         ),
       ),
+    );
+  }
+  
+  Widget _buildProfileField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: AppTheme.bodyStyle.copyWith(
+            fontWeight: FontWeight.w600,
+            color: AppTheme.textSecondaryColor,
+          ),
+        ),
+        SizedBox(height: AppDimensions.paddingS),
+        Container(
+          height: AppDimensions.inputFieldHeight,
+          child: TextFormField(
+            controller: controller,
+            enabled: false,
+            style: AppTheme.bodyStyle,
+            decoration: AppTheme.getInputDecoration(
+              hintText: '',
+              prefixIcon: Icon(
+                icon,
+                color: AppTheme.primaryColor,
+                size: AppDimensions.iconSizeM,
+              ),
+            ).copyWith(
+              filled: true,
+              fillColor: AppTheme.surfaceColor.withOpacity(0.7),
+              disabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                borderSide: BorderSide(
+                  color: AppTheme.dividerColor,
+                  width: 1,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
