@@ -1,8 +1,9 @@
 todos:
-- Current => Remove firebase integration safely because I want to use API based services, note that I want to keep firebase_messaging for push notifications
-- Current(Sub task) => remove anything related to firebase safely, including firebase_messaging for push notifications
+- Done => Remove firebase integration safely because I want to use API based services, note that I want to keep firebase_messaging for push notifications
+- Done(Sub task) => remove anything related to firebase safely, including firebase_messaging for push notifications
 
--  UI Enhancement for the app overall, and implement screenresponsiveness using flutter_screenutil
+-  Current => UI Enhancement for the app overall, and implement screenresponsiveness using flutter_screenutil
+
 -  add multiple languages support(en/ar)
 - create select country screen, this screen is just intended to select the country for the user, based on the selection change the country around the whole app, also this screen controls the selected language, this screen is the first screen that the user will see in the screens flow
 - change the app name to itspass_user

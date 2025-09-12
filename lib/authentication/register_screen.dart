@@ -1,7 +1,10 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 // Firebase imports removed - using API-based services
 import 'package:uber_users_app/authentication/user_information_screen.dart';
+import 'package:uber_users_app/core/constants/app_dimensions.dart';
+import 'package:uber_users_app/core/theme/app_theme.dart';
 import 'package:uber_users_app/methods/common_methods.dart';
 import 'package:uber_users_app/pages/home_page.dart';
 
@@ -41,217 +44,196 @@ class _RegisterScreenState extends State<RegisterScreen> {
     // TODO: Replace with BLoC pattern
     return SafeArea(
       child: Scaffold(
+        backgroundColor: AppTheme.backgroundColor,
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(AppDimensions.paddingL),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                SizedBox(height: AppDimensions.paddingXL),
+                Text(
                   "Enter Your Mobile Number",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                  ),
+                  style: AppTheme.titleStyle,
                 ),
-                const SizedBox(
-                  height: 8,
-                ),
-                TextFormField(
-                  controller: phoneController,
-                  maxLength: 10,
-                  textInputAction: TextInputAction.done,
-                  keyboardType: TextInputType.number,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      phoneController.text = value;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    fillColor: Colors.grey,
-                    counterText: '',
-                    hintText: '313 7426256',
-                    hintStyle: const TextStyle(
-                      color: Colors.grey,
-                      fontSize: 18,
+                SizedBox(height: AppDimensions.paddingS),
+                Container(
+                  height: AppDimensions.inputFieldHeight,
+                  child: TextFormField(
+                    controller: phoneController,
+                    maxLength: 10,
+                    textInputAction: TextInputAction.done,
+                    keyboardType: TextInputType.number,
+                    style: AppTheme.bodyStyle.copyWith(
+                      fontWeight: FontWeight.w600,
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      //borderSide: BorderSide(color: Colors.black),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      //borderSide: BorderSide(color: Colors.black),
-                    ),
-                    prefixIcon: Container(
-                      padding: const EdgeInsets.fromLTRB(8.0, 12.0, 8.0, 12.0),
-                      child: InkWell(
-                        onTap: () {
-                          showCountryPicker(
-                            context: context,
-                            countryListTheme: const CountryListThemeData(
-                                borderRadius: BorderRadius.zero,
-                                bottomSheetHeight: 400),
-                            onSelect: (value) {
-                              setState(() {
-                                selectedCountry = value;
-                              });
-                            },
-                          );
-                        },
-                        child: Text(
-                          ' +${selectedCountry.phoneCode}',
-                          style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
+                    onChanged: (value) {
+                      setState(() {
+                        phoneController.text = value;
+                      });
+                    },
+                    decoration: AppTheme.getInputDecoration(
+                      hintText: '313 7426256',
+                    ).copyWith(
+                      counterText: '',
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: AppDimensions.paddingM,
+                        vertical: AppDimensions.paddingS,
+                      ),
+                      prefixIcon: Container(
+                        padding: EdgeInsets.fromLTRB(
+                          AppDimensions.paddingS,
+                          AppDimensions.paddingS,
+                          AppDimensions.paddingS,
+                          AppDimensions.paddingS,
                         ),
-                      ),
-                    ),
-                    suffixIcon: phoneController.text.length > 9
-                        ? Container(
-                            height: 20,
-                            width: 20,
-                            margin: const EdgeInsets.all(10.0),
-                            decoration: const BoxDecoration(
-                                shape: BoxShape.circle, color: Colors.black),
-                            child: const Icon(
-                              Icons.done,
-                              size: 20,
-                              color: Colors.white,
-                            ),
-                          )
-                        : null,
-                  ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  height: MediaQuery.of(context).size.height * 0.07,
-                  child: ElevatedButton(
-                    onPressed:
-                        sendPhoneNumber, // Correctly call the sendPhoneNumber function
-
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    child: const Text(
-                            "Continue",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
+                        child: InkWell(
+                          onTap: () {
+                            showCountryPicker(
+                              context: context,
+                              countryListTheme: CountryListThemeData(
+                                borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                                bottomSheetHeight: 400.h,
+                              ),
+                              onSelect: (value) {
+                                setState(() {
+                                  selectedCountry = value;
+                                });
+                              },
+                            );
+                          },
+                          child: Text(
+                            ' +${selectedCountry.phoneCode}',
+                            style: AppTheme.bodyStyle.copyWith(
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
+                        ),
+                      ),
+                      suffixIcon: phoneController.text.length > 9
+                          ? Container(
+                              height: AppDimensions.iconSizeM,
+                              width: AppDimensions.iconSizeM,
+                              margin: EdgeInsets.all(AppDimensions.paddingS),
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppTheme.primaryColor,
+                              ),
+                              child: Icon(
+                                Icons.done,
+                                size: AppDimensions.iconSizeS,
+                                color: Colors.white,
+                              ),
+                            )
+                          : null,
+                    ),
                   ),
                 ),
-                const SizedBox(
-                  height: 15,
+                SizedBox(height: AppDimensions.paddingL),
+                SizedBox(
+                  width: double.infinity,
+                  height: AppDimensions.buttonHeightL,
+                  child: ElevatedButton(
+                    onPressed: sendPhoneNumber,
+                    style: AppTheme.primaryButtonStyle,
+                    child: Text(
+                      "Continue",
+                      style: AppTheme.buttonTextStyle,
+                    ),
+                  ),
                 ),
+                SizedBox(height: AppDimensions.paddingL),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Expanded(
                       child: Divider(
                         indent: 0,
-                        color: Colors.grey.shade400,
+                        color: AppTheme.dividerColor,
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppDimensions.paddingS,
+                      ),
                       child: Text(
                         "Or",
-                        style: TextStyle(
-                          color: Colors.grey.shade400,
-                        ),
+                        style: AppTheme.captionStyle,
                       ),
                     ),
                     Expanded(
                       child: Divider(
-                        color: Colors.grey.shade400,
+                        color: AppTheme.dividerColor,
                         endIndent: 0,
                       ),
                     )
                   ],
                 ),
-                const SizedBox(
-                  height: 15,
-                ),
+                SizedBox(height: AppDimensions.paddingL),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  height: MediaQuery.of(context).size.height * 0.07,
+                  width: double.infinity,
+                  height: AppDimensions.buttonHeightL,
                   child: ElevatedButton(
                     onPressed: () {
-                            // TODO: Implement Google Sign-In with API
-                            navigate(isSingedIn: false);
-                          },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey.shade400,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.airplanemode_active,
-                                color: Colors.black,
-                              ),
-                              SizedBox(width: 5),
-                              Text(
-                                "Continue with Google",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
+                      // TODO: Implement Google Sign-In with API
+                      navigate(isSingedIn: false);
+                    },
+                    style: AppTheme.secondaryButtonStyle,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.g_mobiledata,
+                          color: AppTheme.primaryColor,
+                          size: AppDimensions.iconSizeM,
+                        ),
+                        SizedBox(width: AppDimensions.paddingS),
+                        Text(
+                          "Continue with Google",
+                          style: AppTheme.bodyStyle.copyWith(
+                            color: AppTheme.primaryColor,
+                            fontWeight: FontWeight.w600,
                           ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                const SizedBox(
-                  height: 15,
-                ),
+                SizedBox(height: AppDimensions.paddingM),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  height: MediaQuery.of(context).size.height * 0.07,
-                  child: ElevatedButton.icon(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey.shade400,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    label: const Text(
-                      "Continue with Apple",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                      ),
-                    ),
-                    icon: const Icon(
-                      Icons.apple,
-                      color: Colors.black,
+                  width: double.infinity,
+                  height: AppDimensions.buttonHeightL,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // TODO: Implement Apple Sign-In
+                    },
+                    style: AppTheme.secondaryButtonStyle,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.apple,
+                          color: AppTheme.primaryColor,
+                          size: AppDimensions.iconSizeM,
+                        ),
+                        SizedBox(width: AppDimensions.paddingS),
+                        Text(
+                          "Continue with Apple",
+                          style: AppTheme.bodyStyle.copyWith(
+                            color: AppTheme.primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 15,
-                ),
-                const Text(
-                  "By proceeding, you consent to get calls, whatsApp or SMS messages,including by automated means, from Uber and its affiliates to the number provided.",
+                SizedBox(height: AppDimensions.paddingXL),
+                Text(
+                  "By proceeding, you consent to get calls, WhatsApp or SMS messages, including by automated means, from ItsPass and its affiliates to the number provided.",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.grey,
+                  style: AppTheme.captionStyle.copyWith(
+                    height: 1.4,
                   ),
                 ),
               ],
