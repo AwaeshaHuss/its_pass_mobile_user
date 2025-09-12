@@ -1,5 +1,5 @@
 class AppConstants {
-  // Firebase Collections
+  // API Collections/Endpoints
   static const String usersCollection = 'users';
   static const String driversCollection = 'drivers';
   static const String tripsCollection = 'trips';

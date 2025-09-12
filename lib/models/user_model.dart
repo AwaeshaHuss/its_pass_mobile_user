@@ -13,7 +13,7 @@ class UserModel {
     required this.blockStatus,
   });
 
-  // Factory method to create a UserModel from a Map (for Firebase Realtime Database)
+  // Factory method to create a UserModel from a Map (for API responses)
   factory UserModel.fromMap(Map<dynamic, dynamic> map) {
     return UserModel(
       id: map['id'],
@@ -24,7 +24,7 @@ class UserModel {
     );
   }
 
-  // Method to convert a UserModel to a Map (for Firebase Realtime Database)
+  // Method to convert a UserModel to a Map (for API requests)
   Map<String, dynamic> toMap() {
     return {
       'id': id,

@@ -9,7 +9,6 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:firebase_messaging/firebase_messaging.dart' as _i892;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:google_sign_in/google_sign_in.dart' as _i116;
 import 'package:injectable/injectable.dart' as _i526;
@@ -32,9 +31,7 @@ import 'package:uber_users_app/features/authentication/domain/usecases/verify_ot
     as _i553;
 import 'package:uber_users_app/features/authentication/presentation/bloc/auth_bloc.dart'
     as _i94;
-import 'package:uber_users_app/injection/firebase_module.dart' as _i859;
-import 'package:uber_users_app/services/firebase_messaging_service.dart'
-    as _i685;
+import 'package:uber_users_app/injection/app_module.dart' as _i285;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -49,19 +46,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     final appModule = _$AppModule();
     await gh.factoryAsync<_i460.SharedPreferences>(
-      () => appModule.sharedPreferences,
+      () => appModule.prefs,
       preResolve: true,
     );
     gh.lazySingleton<_i116.GoogleSignIn>(() => appModule.googleSignIn);
-    gh.lazySingleton<_i892.FirebaseMessaging>(
-        () => appModule.firebaseMessaging);
     gh.lazySingleton<_i634.ApiClient>(
         () => _i634.ApiClient(gh<_i460.SharedPreferences>()));
-    gh.lazySingleton<_i685.FirebaseMessagingService>(
-        () => _i685.FirebaseMessagingService(
-              gh<_i892.FirebaseMessaging>(),
-              gh<_i460.SharedPreferences>(),
-            ));
     gh.lazySingleton<_i555.ApiService>(
         () => _i555.ApiService(gh<_i634.ApiClient>()));
     gh.lazySingleton<_i951.AuthApiDataSource>(() => _i951.AuthApiDataSourceImpl(
@@ -89,4 +79,4 @@ extension GetItInjectableX on _i174.GetIt {
   }
 }
 
-class _$AppModule extends _i859.AppModule {}
+class _$AppModule extends _i285.AppModule {}

@@ -45,7 +45,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (failure) => emit(AuthError(message: failure.toString())),
       (_) {
         // Note: In a real implementation, you'd need to handle the verification ID
-        // from Firebase's callback. For now, we'll emit a success state.
+        // from the API's callback. For now, we'll emit a success state.
         emit(const PhoneSignInSuccess(verificationId: 'temp_verification_id'));
       },
     );

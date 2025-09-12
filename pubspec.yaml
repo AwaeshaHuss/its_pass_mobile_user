@@ -32,7 +32,6 @@ dependencies:
     sdk: flutter
   google_maps_flutter: ^2.7.0
   connectivity_plus: ^6.0.4
-  firebase_messaging: ^15.0.4
   permission_handler: ^11.3.1
   geolocator: ^14.0.2
   http: ^1.2.2
