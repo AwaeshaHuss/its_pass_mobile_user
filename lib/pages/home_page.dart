@@ -9,12 +9,12 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:uber_users_app/appInfo/app_info.dart';
-import 'package:uber_users_app/authentication/register_screen.dart';
-import 'package:uber_users_app/core/constants/app_dimensions.dart';
-import 'package:uber_users_app/core/theme/app_theme.dart';
-import 'package:uber_users_app/pages/search_destination_place.dart';
-import 'package:uber_users_app/widgets/custome_drawer.dart';
+import 'package:itspass_user/appInfo/app_info.dart';
+import 'package:itspass_user/authentication/register_screen.dart';
+import 'package:itspass_user/core/constants/app_dimensions.dart';
+import 'package:itspass_user/core/theme/app_theme.dart';
+import 'package:itspass_user/pages/search_destination_place.dart';
+import 'package:itspass_user/widgets/custome_drawer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../global/global_var.dart';
 import '../global/trip_var.dart';
@@ -298,8 +298,8 @@ class _HomePageState extends State<HomePage> {
       rideDetailsContainerHeight = 0;
       requestContainerHeight = 0;
       tripContainerHeight = 0;
-      searchContainerHeight = 230;
-      bottomMapPadding = 300;
+      searchContainerHeight = 200.h;
+      bottomMapPadding = 260.h;
       isDrawerOpened = true;
 
       status = "";
@@ -577,7 +577,7 @@ class _HomePageState extends State<HomePage> {
                 googleMapCompleterController.complete(controllerGoogleMap);
 
                 setState(() {
-                  bottomMapPadding = 300;
+                  bottomMapPadding = 260.h;
                 });
 
                 await getCurrentLiveLocationOfUser();
@@ -643,76 +643,81 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: AppDimensions.paddingL, 
-                        vertical: AppDimensions.paddingL),
-                    child: Column(
-                      children: [
-                        // From Location
-                        _buildLocationRow(
-                          icon: Icons.radio_button_checked,
-                          iconColor: AppTheme.primaryColor,
-                          label: "From",
-                          address: userAddress ?? 'Unknown location',
-                        ),
-
-                        SizedBox(height: AppDimensions.paddingM),
-
-                        Divider(
-                          height: 1,
-                          thickness: 1,
-                          color: AppTheme.dividerColor,
-                          indent: AppDimensions.paddingXL,
-                          endIndent: AppDimensions.paddingXL,
-                        ),
-
-                        SizedBox(height: AppDimensions.paddingM),
-
-                        // To Location
-                        GestureDetector(
-                          onTap: () async {
-                            var responseFromSearchPage = await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (c) =>
-                                        const SearchDestinationPlace()));
-
-                            if (responseFromSearchPage == "placeSelected") {
-                              displayUserRideDetailsContainer();
-                            }
-                          },
-                          child: _buildLocationRow(
-                            icon: Icons.location_on,
-                            iconColor: AppTheme.errorColor,
-                            label: "To",
-                            address: "Where would you like to go?",
-                            isClickable: true,
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: AppDimensions.paddingL, 
+                          vertical: AppDimensions.paddingM),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // From Location
+                          _buildLocationRow(
+                            icon: Icons.radio_button_checked,
+                            iconColor: AppTheme.primaryColor,
+                            label: "From",
+                            address: userAddress ?? 'Unknown location',
                           ),
-                        ),
 
-                        SizedBox(height: AppDimensions.paddingL),
+                          SizedBox(height: AppDimensions.paddingM),
 
-                        // Request Ride Button
-                        SizedBox(
-                          width: double.infinity,
-                          height: AppDimensions.buttonHeightL,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (c) =>
-                                        const SearchDestinationPlace()));
+                          Divider(
+                            height: 1,
+                            thickness: 1,
+                            color: AppTheme.dividerColor,
+                            indent: AppDimensions.paddingXL,
+                            endIndent: AppDimensions.paddingXL,
+                          ),
+
+                          SizedBox(height: AppDimensions.paddingM),
+
+                          // To Location
+                          GestureDetector(
+                            onTap: () async {
+                              var responseFromSearchPage = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (c) =>
+                                          const SearchDestinationPlace()));
+
+                              if (responseFromSearchPage == "placeSelected") {
+                                displayUserRideDetailsContainer();
+                              }
                             },
-                            style: AppTheme.primaryButtonStyle,
-                            child: Text(
-                              "Request a Ride",
-                              style: AppTheme.buttonTextStyle,
+                            child: _buildLocationRow(
+                              icon: Icons.location_on,
+                              iconColor: AppTheme.errorColor,
+                              label: "To",
+                              address: "Where would you like to go?",
+                              isClickable: true,
                             ),
                           ),
-                        ),
-                      ],
+
+                          SizedBox(height: AppDimensions.paddingM),
+
+                          // Request Ride Button
+                          SizedBox(
+                            width: double.infinity,
+                            height: AppDimensions.buttonHeightL,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (c) =>
+                                          const SearchDestinationPlace()));
+                              },
+                              style: AppTheme.primaryButtonStyle,
+                              child: Text(
+                                "Request a Ride",
+                                style: AppTheme.buttonTextStyle,
+                              ),
+                            ),
+                          ),
+                          
+                          SizedBox(height: AppDimensions.paddingS),
+                        ],
+                      ),
                     ),
                   ),
                 ),

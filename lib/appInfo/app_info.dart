@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:uber_users_app/models/address_models.dart';
+import 'package:itspass_user/models/address_models.dart';
 
 class AppInfoClass extends ChangeNotifier{
   AddressModel? pickUpLocation;

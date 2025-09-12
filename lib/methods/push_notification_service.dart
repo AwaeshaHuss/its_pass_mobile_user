@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:uber_users_app/appInfo/app_info.dart';
-import 'package:uber_users_app/global/global_var.dart';
+import 'package:itspass_user/appInfo/app_info.dart';
+import 'package:itspass_user/global/global_var.dart';
 
 class PushNotificationService {
   // Generic push notification service that can work with any push notification provider

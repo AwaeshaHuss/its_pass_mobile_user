@@ -41,7 +41,7 @@ class _AboutPageState extends State<AboutPage> {
             const Padding(
               padding: EdgeInsets.all(4.0),
               child: Text(
-                "This app is developed by GulzarSoft.",
+                "This app is developed by ItsPass.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.grey,
@@ -56,7 +56,7 @@ class _AboutPageState extends State<AboutPage> {
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
-                "In case of any misuse or any report please contact admin at gulzarsoft@gmail.com",
+                "In case of any misuse or any report please contact admin at info@itspass.com",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.grey,

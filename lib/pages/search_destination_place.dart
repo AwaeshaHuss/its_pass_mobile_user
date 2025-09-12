@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:uber_users_app/appInfo/app_info.dart';
-import 'package:uber_users_app/global/global_var.dart';
-import 'package:uber_users_app/main.dart';
-import 'package:uber_users_app/methods/common_methods.dart';
-import 'package:uber_users_app/models/prediction_model.dart';
-import 'package:uber_users_app/widgets/prediction_place_ui.dart';
+import 'package:itspass_user/appInfo/app_info.dart';
+import 'package:itspass_user/global/global_var.dart';
+import 'package:itspass_user/main.dart';
+import 'package:itspass_user/methods/common_methods.dart';
+import 'package:itspass_user/models/prediction_model.dart';
+import 'package:itspass_user/widgets/prediction_place_ui.dart';
 
 class SearchDestinationPlace extends StatefulWidget {
   const SearchDestinationPlace({super.key});

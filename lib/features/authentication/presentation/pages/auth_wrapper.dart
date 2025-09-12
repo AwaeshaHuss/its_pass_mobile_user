@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uber_users_app/features/authentication/presentation/bloc/auth_bloc.dart';
-import 'package:uber_users_app/features/authentication/presentation/bloc/auth_event.dart';
-import 'package:uber_users_app/features/authentication/presentation/bloc/auth_state.dart';
-import 'package:uber_users_app/features/authentication/presentation/pages/phone_auth_screen.dart';
-import 'package:uber_users_app/features/authentication/presentation/pages/user_info_screen.dart';
-import 'package:uber_users_app/pages/blocked_screen.dart';
-import 'package:uber_users_app/pages/home_page.dart';
+import 'package:itspass_user/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:itspass_user/features/authentication/presentation/bloc/auth_event.dart';
+import 'package:itspass_user/features/authentication/presentation/bloc/auth_state.dart';
+import 'package:itspass_user/features/authentication/presentation/pages/phone_auth_screen.dart';
+import 'package:itspass_user/features/authentication/presentation/pages/user_info_screen.dart';
+import 'package:itspass_user/pages/blocked_screen.dart';
+import 'package:itspass_user/pages/home_page.dart';
 
 class AuthWrapper extends StatefulWidget {
   const AuthWrapper({super.key});

@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:uber_users_app/appInfo/app_info.dart';
-import 'package:uber_users_app/features/authentication/presentation/bloc/auth_bloc.dart';
-import 'package:uber_users_app/features/authentication/presentation/pages/auth_wrapper.dart';
-import 'package:uber_users_app/injection/injection.dart';
+import 'package:itspass_user/appInfo/app_info.dart';
+import 'package:itspass_user/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:itspass_user/features/onboarding/presentation/pages/app_wrapper.dart';
+import 'package:itspass_user/features/settings/providers/language_provider.dart';
+import 'package:itspass_user/injection/injection.dart';
+import 'package:itspass_user/generated/l10n/app_localizations.dart';
 
 late Size mq;
 Future<void> main() async {
@@ -29,6 +31,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AppInfoClass()),
+        ChangeNotifierProvider(create: (_) => LanguageProvider()),
         BlocProvider<AuthBloc>(
           create: (_) => getIt<AuthBloc>(),
         ),
@@ -38,15 +41,22 @@ class MyApp extends StatelessWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (context, child) {
-          return MaterialApp(
-            title: 'ItsPass User App',
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF2E7D32)),
-              useMaterial3: true,
-              fontFamily: 'Roboto',
-            ),
-            home: const AuthWrapper(),
+          return Consumer<LanguageProvider>(
+            builder: (context, languageProvider, child) {
+              return MaterialApp(
+                title: 'ItsPass User',
+                debugShowCheckedModeBanner: false,
+                locale: languageProvider.locale,
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                supportedLocales: AppLocalizations.supportedLocales,
+                theme: ThemeData(
+                  colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF2E7D32)),
+                  useMaterial3: true,
+                  fontFamily: 'Roboto',
+                ),
+                home: const AppWrapper(),
+              );
+            },
           );
         },
       ),

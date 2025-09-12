@@ -9,9 +9,9 @@ class ApiClient {
 
   ApiClient(this._prefs) {
     _dio = Dio(BaseOptions(
-      baseUrl: 'https://your-api-base-url.com/api/v1', // Replace with your API base URL
-      connectTimeout: const Duration(seconds: 30),
-      receiveTimeout: const Duration(seconds: 30),
+      baseUrl: 'http://localhost:3000/api/v1', // Local development server
+      connectTimeout: const Duration(seconds: 5),
+      receiveTimeout: const Duration(seconds: 5),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

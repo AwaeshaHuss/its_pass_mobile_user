@@ -1,10 +1,10 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uber_users_app/features/authentication/presentation/bloc/auth_bloc.dart';
-import 'package:uber_users_app/features/authentication/presentation/bloc/auth_event.dart';
-import 'package:uber_users_app/features/authentication/presentation/bloc/auth_state.dart';
-import 'package:uber_users_app/features/authentication/presentation/pages/otp_verification_screen.dart';
+import 'package:itspass_user/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:itspass_user/features/authentication/presentation/bloc/auth_event.dart';
+import 'package:itspass_user/features/authentication/presentation/bloc/auth_state.dart';
+import 'package:itspass_user/features/authentication/presentation/pages/otp_verification_screen.dart';
 
 class PhoneAuthScreen extends StatefulWidget {
   const PhoneAuthScreen({super.key});

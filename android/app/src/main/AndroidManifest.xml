@@ -9,7 +9,7 @@
 
     <application
     
-        android:label="Uber Users App"
+        android:label="ItsPass User"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 

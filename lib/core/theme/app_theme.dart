@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:uber_users_app/core/constants/app_dimensions.dart';
+import 'package:itspass_user/core/constants/app_dimensions.dart';
 
 class AppTheme {
   // Colors

@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import 'package:uber_users_app/core/errors/exceptions.dart';
-import 'package:uber_users_app/core/network/api_client.dart';
-import 'package:uber_users_app/core/network/api_endpoints.dart';
+import 'package:itspass_user/core/errors/exceptions.dart';
+import 'package:itspass_user/core/network/api_client.dart';
+import 'package:itspass_user/core/network/api_endpoints.dart';
 
 @lazySingleton
 class ApiService {

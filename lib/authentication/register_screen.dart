@@ -2,11 +2,12 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 // Firebase imports removed - using API-based services
-import 'package:uber_users_app/authentication/user_information_screen.dart';
-import 'package:uber_users_app/core/constants/app_dimensions.dart';
-import 'package:uber_users_app/core/theme/app_theme.dart';
-import 'package:uber_users_app/methods/common_methods.dart';
-import 'package:uber_users_app/pages/home_page.dart';
+import 'package:itspass_user/authentication/user_information_screen.dart';
+import 'package:itspass_user/core/constants/app_dimensions.dart';
+import 'package:itspass_user/core/theme/app_theme.dart';
+import 'package:itspass_user/generated/l10n/app_localizations.dart';
+import 'package:itspass_user/methods/common_methods.dart';
+import 'package:itspass_user/pages/home_page.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -41,6 +42,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     // TODO: Replace with BLoC pattern
     return SafeArea(
       child: Scaffold(
@@ -53,7 +55,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               children: [
                 SizedBox(height: AppDimensions.paddingXL),
                 Text(
-                  "Enter Your Mobile Number",
+                  localizations.enterPhoneNumber,
                   style: AppTheme.titleStyle,
                 ),
                 SizedBox(height: AppDimensions.paddingS),
@@ -137,7 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     onPressed: sendPhoneNumber,
                     style: AppTheme.primaryButtonStyle,
                     child: Text(
-                      "Continue",
+                      localizations.continueText,
                       style: AppTheme.buttonTextStyle,
                     ),
                   ),
@@ -157,7 +159,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         horizontal: AppDimensions.paddingS,
                       ),
                       child: Text(
-                        "Or",
+                        localizations.or,
                         style: AppTheme.captionStyle,
                       ),
                     ),
@@ -189,7 +191,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         SizedBox(width: AppDimensions.paddingS),
                         Text(
-                          "Continue with Google",
+                          localizations.signInWithGoogle,
                           style: AppTheme.bodyStyle.copyWith(
                             color: AppTheme.primaryColor,
                             fontWeight: FontWeight.w600,

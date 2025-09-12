@@ -1,0 +1,237 @@
+{
+  "@@locale": "en",
+  "appTitle": "ItsPass User",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  
+  "welcome": "Welcome",
+  "@welcome": {
+    "description": "Welcome message"
+  },
+  
+  "phoneNumber": "Phone Number",
+  "@phoneNumber": {
+    "description": "Phone number label"
+  },
+  
+  "enterPhoneNumber": "Enter your phone number",
+  "@enterPhoneNumber": {
+    "description": "Phone number input hint"
+  },
+  
+  "sendOTP": "Send OTP",
+  "@sendOTP": {
+    "description": "Send OTP button text"
+  },
+  
+  "verifyOTP": "Verify OTP",
+  "@verifyOTP": {
+    "description": "Verify OTP button text"
+  },
+  
+  "enterOTP": "Enter the OTP sent to your phone",
+  "@enterOTP": {
+    "description": "OTP input hint"
+  },
+  
+  "resendOTP": "Resend OTP",
+  "@resendOTP": {
+    "description": "Resend OTP button text"
+  },
+  
+  "verify": "Verify",
+  "@verify": {
+    "description": "Verify button text"
+  },
+  
+  "fullName": "Full Name",
+  "@fullName": {
+    "description": "Full name label"
+  },
+  
+  "enterFullName": "Enter your full name",
+  "@enterFullName": {
+    "description": "Full name input hint"
+  },
+  
+  "email": "Email",
+  "@email": {
+    "description": "Email label"
+  },
+  
+  "enterEmail": "Enter your email address",
+  "@enterEmail": {
+    "description": "Email input hint"
+  },
+  
+  "save": "Save",
+  "@save": {
+    "description": "Save button text"
+  },
+  
+  "from": "From",
+  "@from": {
+    "description": "From location label"
+  },
+  
+  "to": "To",
+  "@to": {
+    "description": "To location label"
+  },
+  
+  "fetchingLocation": "Fetching Your Current Location.",
+  "@fetchingLocation": {
+    "description": "Location fetching message"
+  },
+  
+  "whereToGo": "Where would you like to go?",
+  "@whereToGo": {
+    "description": "Destination selection hint"
+  },
+  
+  "requestRide": "Request a Ride",
+  "@requestRide": {
+    "description": "Request ride button text"
+  },
+  
+  "myProfile": "My Profile",
+  "@myProfile": {
+    "description": "My profile menu item"
+  },
+  
+  "tripHistory": "Trip History",
+  "@tripHistory": {
+    "description": "Trip history menu item"
+  },
+  
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings menu item"
+  },
+  
+  "privacyPolicy": "Privacy Policy",
+  "@privacyPolicy": {
+    "description": "Privacy policy menu item"
+  },
+  
+  "helpSupport": "Help & Support",
+  "@helpSupport": {
+    "description": "Help and support menu item"
+  },
+  
+  "about": "About",
+  "@about": {
+    "description": "About menu item"
+  },
+  
+  "rateUs": "Rate Us",
+  "@rateUs": {
+    "description": "Rate us menu item"
+  },
+  
+  "logout": "Logout",
+  "@logout": {
+    "description": "Logout menu item"
+  },
+  
+  "logoutConfirmation": "Are you sure you want to logout?",
+  "@logoutConfirmation": {
+    "description": "Logout confirmation message"
+  },
+  
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  
+  "confirm": "Confirm",
+  "@confirm": {
+    "description": "Confirm button text"
+  },
+  
+  "language": "Language",
+  "@language": {
+    "description": "Language label"
+  },
+  
+  "english": "English",
+  "@english": {
+    "description": "English language option"
+  },
+  
+  "arabic": "العربية",
+  "@arabic": {
+    "description": "Arabic language option"
+  },
+  
+  "selectLanguage": "Select Language",
+  "@selectLanguage": {
+    "description": "Select language title"
+  },
+  
+  "country": "Country",
+  "@country": {
+    "description": "Country label"
+  },
+  
+  "selectCountry": "Select Country",
+  "@selectCountry": {
+    "description": "Select country title"
+  },
+  
+  "continueText": "Continue",
+  "@continueText": {
+    "description": "Continue button text"
+  },
+  
+  "signInWithGoogle": "Sign in with Google",
+  "@signInWithGoogle": {
+    "description": "Google sign in button text"
+  },
+  
+  "or": "OR",
+  "@or": {
+    "description": "OR separator text"
+  },
+  
+  "loading": "Loading...",
+  "@loading": {
+    "description": "Loading message"
+  },
+  
+  "error": "Error",
+  "@error": {
+    "description": "Error label"
+  },
+  
+  "success": "Success",
+  "@success": {
+    "description": "Success label"
+  },
+  
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry button text"
+  },
+  
+  "noTripsYet": "No trips yet",
+  "@noTripsYet": {
+    "description": "No trips message"
+  },
+  
+  "completed": "Completed",
+  "@completed": {
+    "description": "Completed status"
+  },
+  
+  "cancelled": "Cancelled",
+  "@cancelled": {
+    "description": "Cancelled status"
+  },
+  
+  "inProgress": "In Progress",
+  "@inProgress": {
+    "description": "In progress status"
+  }
+}

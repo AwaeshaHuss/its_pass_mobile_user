@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:uber_users_app/authentication/register_screen.dart';
+import 'package:itspass_user/authentication/register_screen.dart';
 
 class BlockedScreen extends StatefulWidget {
   const BlockedScreen({super.key});

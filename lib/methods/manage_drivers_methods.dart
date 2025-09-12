@@ -1,4 +1,4 @@
-import 'package:uber_users_app/models/online_nearby_drivers.dart';
+import 'package:itspass_user/models/online_nearby_drivers.dart';
 
 class ManageDriversMethods {
   static List<OnlineNearbyDrivers> nearbyOnlineDriversList = [];

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uber_users_app/features/authentication/domain/entities/user_entity.dart';
-import 'package:uber_users_app/features/authentication/presentation/bloc/auth_bloc.dart';
-import 'package:uber_users_app/features/authentication/presentation/bloc/auth_event.dart';
-import 'package:uber_users_app/features/authentication/presentation/bloc/auth_state.dart';
-import 'package:uber_users_app/pages/home_page.dart';
+import 'package:itspass_user/features/authentication/domain/entities/user_entity.dart';
+import 'package:itspass_user/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:itspass_user/features/authentication/presentation/bloc/auth_event.dart';
+import 'package:itspass_user/features/authentication/presentation/bloc/auth_state.dart';
+import 'package:itspass_user/pages/home_page.dart';
 
 class UserInfoScreen extends StatefulWidget {
   final String userId;

@@ -6,9 +6,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:uber_users_app/appInfo/app_info.dart';
-import 'package:uber_users_app/global/global_var.dart';
-import 'package:uber_users_app/models/address_models.dart';
+import 'package:itspass_user/appInfo/app_info.dart';
+import 'package:itspass_user/global/global_var.dart';
+import 'package:itspass_user/models/address_models.dart';
 
 import '../models/direction_details.dart';
 

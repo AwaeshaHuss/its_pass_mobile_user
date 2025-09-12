@@ -1,0 +1,237 @@
+{
+  "@@locale": "ar",
+  "appTitle": "مستخدم إتس باس",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  
+  "welcome": "مرحباً",
+  "@welcome": {
+    "description": "Welcome message"
+  },
+  
+  "phoneNumber": "رقم الهاتف",
+  "@phoneNumber": {
+    "description": "Phone number label"
+  },
+  
+  "enterPhoneNumber": "أدخل رقم هاتفك",
+  "@enterPhoneNumber": {
+    "description": "Phone number input hint"
+  },
+  
+  "sendOTP": "إرسال رمز التحقق",
+  "@sendOTP": {
+    "description": "Send OTP button text"
+  },
+  
+  "verifyOTP": "تحقق من رمز التحقق",
+  "@verifyOTP": {
+    "description": "Verify OTP button text"
+  },
+  
+  "enterOTP": "أدخل رمز التحقق المرسل إلى هاتفك",
+  "@enterOTP": {
+    "description": "OTP input hint"
+  },
+  
+  "resendOTP": "إعادة إرسال رمز التحقق",
+  "@resendOTP": {
+    "description": "Resend OTP button text"
+  },
+  
+  "verify": "تحقق",
+  "@verify": {
+    "description": "Verify button text"
+  },
+  
+  "fullName": "الاسم الكامل",
+  "@fullName": {
+    "description": "Full name label"
+  },
+  
+  "enterFullName": "أدخل اسمك الكامل",
+  "@enterFullName": {
+    "description": "Full name input hint"
+  },
+  
+  "email": "البريد الإلكتروني",
+  "@email": {
+    "description": "Email label"
+  },
+  
+  "enterEmail": "أدخل عنوان بريدك الإلكتروني",
+  "@enterEmail": {
+    "description": "Email input hint"
+  },
+  
+  "save": "حفظ",
+  "@save": {
+    "description": "Save button text"
+  },
+  
+  "from": "من",
+  "@from": {
+    "description": "From location label"
+  },
+  
+  "to": "إلى",
+  "@to": {
+    "description": "To location label"
+  },
+  
+  "fetchingLocation": "جاري تحديد موقعك الحالي.",
+  "@fetchingLocation": {
+    "description": "Location fetching message"
+  },
+  
+  "whereToGo": "إلى أين تريد الذهاب؟",
+  "@whereToGo": {
+    "description": "Destination selection hint"
+  },
+  
+  "requestRide": "طلب رحلة",
+  "@requestRide": {
+    "description": "Request ride button text"
+  },
+  
+  "myProfile": "ملفي الشخصي",
+  "@myProfile": {
+    "description": "My profile menu item"
+  },
+  
+  "tripHistory": "تاريخ الرحلات",
+  "@tripHistory": {
+    "description": "Trip history menu item"
+  },
+  
+  "settings": "الإعدادات",
+  "@settings": {
+    "description": "Settings menu item"
+  },
+  
+  "privacyPolicy": "سياسة الخصوصية",
+  "@privacyPolicy": {
+    "description": "Privacy policy menu item"
+  },
+  
+  "helpSupport": "المساعدة والدعم",
+  "@helpSupport": {
+    "description": "Help and support menu item"
+  },
+  
+  "about": "حول",
+  "@about": {
+    "description": "About menu item"
+  },
+  
+  "rateUs": "قيمنا",
+  "@rateUs": {
+    "description": "Rate us menu item"
+  },
+  
+  "logout": "تسجيل الخروج",
+  "@logout": {
+    "description": "Logout menu item"
+  },
+  
+  "logoutConfirmation": "هل أنت متأكد من أنك تريد تسجيل الخروج؟",
+  "@logoutConfirmation": {
+    "description": "Logout confirmation message"
+  },
+  
+  "cancel": "إلغاء",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  
+  "confirm": "تأكيد",
+  "@confirm": {
+    "description": "Confirm button text"
+  },
+  
+  "language": "اللغة",
+  "@language": {
+    "description": "Language label"
+  },
+  
+  "english": "English",
+  "@english": {
+    "description": "English language option"
+  },
+  
+  "arabic": "العربية",
+  "@arabic": {
+    "description": "Arabic language option"
+  },
+  
+  "selectLanguage": "اختر اللغة",
+  "@selectLanguage": {
+    "description": "Select language title"
+  },
+  
+  "country": "البلد",
+  "@country": {
+    "description": "Country label"
+  },
+  
+  "selectCountry": "اختر البلد",
+  "@selectCountry": {
+    "description": "Select country title"
+  },
+  
+  "continueText": "متابعة",
+  "@continueText": {
+    "description": "Continue button text"
+  },
+  
+  "signInWithGoogle": "تسجيل الدخول باستخدام جوجل",
+  "@signInWithGoogle": {
+    "description": "Google sign in button text"
+  },
+  
+  "or": "أو",
+  "@or": {
+    "description": "OR separator text"
+  },
+  
+  "loading": "جاري التحميل...",
+  "@loading": {
+    "description": "Loading message"
+  },
+  
+  "error": "خطأ",
+  "@error": {
+    "description": "Error label"
+  },
+  
+  "success": "نجح",
+  "@success": {
+    "description": "Success label"
+  },
+  
+  "retry": "إعادة المحاولة",
+  "@retry": {
+    "description": "Retry button text"
+  },
+  
+  "noTripsYet": "لا توجد رحلات بعد",
+  "@noTripsYet": {
+    "description": "No trips message"
+  },
+  
+  "completed": "مكتمل",
+  "@completed": {
+    "description": "Completed status"
+  },
+  
+  "cancelled": "ملغي",
+  "@cancelled": {
+    "description": "Cancelled status"
+  },
+  
+  "inProgress": "قيد التنفيذ",
+  "@inProgress": {
+    "description": "In progress status"
+  }
+}

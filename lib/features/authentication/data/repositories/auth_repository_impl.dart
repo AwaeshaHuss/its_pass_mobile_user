@@ -1,12 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:uber_users_app/core/errors/exceptions.dart';
-import 'package:uber_users_app/core/errors/failures.dart';
-import 'package:uber_users_app/core/utils/typedef.dart';
-import 'package:uber_users_app/features/authentication/data/datasources/auth_api_data_source.dart';
-import 'package:uber_users_app/features/authentication/data/models/user_model.dart';
-import 'package:uber_users_app/features/authentication/domain/entities/user_entity.dart';
-import 'package:uber_users_app/features/authentication/domain/repositories/auth_repository.dart';
+import 'package:itspass_user/core/errors/exceptions.dart';
+import 'package:itspass_user/core/errors/failures.dart';
+import 'package:itspass_user/core/utils/typedef.dart';
+import 'package:itspass_user/features/authentication/data/datasources/auth_api_data_source.dart';
+import 'package:itspass_user/features/authentication/data/models/user_model.dart';
+import 'package:itspass_user/features/authentication/domain/entities/user_entity.dart';
+import 'package:itspass_user/features/authentication/domain/repositories/auth_repository.dart';
 
 @LazySingleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {

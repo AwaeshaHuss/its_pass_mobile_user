@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:uber_users_app/core/constants/app_dimensions.dart';
-import 'package:uber_users_app/core/theme/app_theme.dart';
-import 'package:uber_users_app/methods/common_methods.dart';
-import 'package:uber_users_app/pages/home_page.dart';
+import 'package:itspass_user/core/constants/app_dimensions.dart';
+import 'package:itspass_user/core/theme/app_theme.dart';
+import 'package:itspass_user/methods/common_methods.dart';
+import 'package:itspass_user/pages/home_page.dart';
 
 import '../models/user_model.dart';
 

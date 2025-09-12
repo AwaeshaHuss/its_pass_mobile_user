@@ -1,11 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:uber_users_app/features/authentication/domain/usecases/get_user_data.dart';
-import 'package:uber_users_app/features/authentication/domain/usecases/save_user_data.dart';
-import 'package:uber_users_app/features/authentication/domain/usecases/sign_in_with_phone.dart';
-import 'package:uber_users_app/features/authentication/domain/usecases/verify_otp.dart';
-import 'package:uber_users_app/features/authentication/presentation/bloc/auth_event.dart';
-import 'package:uber_users_app/features/authentication/presentation/bloc/auth_state.dart';
+import 'package:itspass_user/features/authentication/domain/usecases/get_user_data.dart';
+import 'package:itspass_user/features/authentication/domain/usecases/save_user_data.dart';
+import 'package:itspass_user/features/authentication/domain/usecases/sign_in_with_phone.dart';
+import 'package:itspass_user/features/authentication/domain/usecases/verify_otp.dart';
+import 'package:itspass_user/features/authentication/presentation/bloc/auth_event.dart';
+import 'package:itspass_user/features/authentication/presentation/bloc/auth_state.dart';
 
 @injectable
 class AuthBloc extends Bloc<AuthEvent, AuthState> {

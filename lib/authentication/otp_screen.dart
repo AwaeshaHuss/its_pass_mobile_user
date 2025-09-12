@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
-import 'package:uber_users_app/authentication/user_information_screen.dart';
-import 'package:uber_users_app/core/constants/app_dimensions.dart';
-import 'package:uber_users_app/core/theme/app_theme.dart';
-import 'package:uber_users_app/methods/common_methods.dart';
-import 'package:uber_users_app/pages/home_page.dart';
+import 'package:itspass_user/authentication/user_information_screen.dart';
+import 'package:itspass_user/core/constants/app_dimensions.dart';
+import 'package:itspass_user/core/theme/app_theme.dart';
+import 'package:itspass_user/generated/l10n/app_localizations.dart';
+import 'package:itspass_user/methods/common_methods.dart';
+import 'package:itspass_user/pages/home_page.dart';
 
 class OTPScreen extends StatefulWidget {
   final String verificationId;
@@ -21,6 +22,7 @@ class _OTPScreenState extends State<OTPScreen> {
   String? smsCode;
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     // TODO: Replace with BLoC pattern for OTP verification
     return SafeArea(
       child: Scaffold(
@@ -35,12 +37,12 @@ class _OTPScreenState extends State<OTPScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Verification',
+                  localizations.verifyOTP,
                   style: AppTheme.headingStyle,
                 ),
                 SizedBox(height: AppDimensions.paddingM),
                 Text(
-                  'Enter the OTP code sent to your phone number',
+                  localizations.enterOTP,
                   textAlign: TextAlign.center,
                   style: AppTheme.bodyStyle.copyWith(
                     color: AppTheme.textSecondaryColor,

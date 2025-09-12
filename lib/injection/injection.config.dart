@@ -13,25 +13,25 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:google_sign_in/google_sign_in.dart' as _i116;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
-import 'package:uber_users_app/core/network/api_client.dart' as _i634;
-import 'package:uber_users_app/core/network/api_service.dart' as _i555;
-import 'package:uber_users_app/features/authentication/data/datasources/auth_api_data_source.dart'
+import 'package:itspass_user/core/network/api_client.dart' as _i634;
+import 'package:itspass_user/core/network/api_service.dart' as _i555;
+import 'package:itspass_user/features/authentication/data/datasources/auth_api_data_source.dart'
     as _i951;
-import 'package:uber_users_app/features/authentication/data/repositories/auth_repository_impl.dart'
+import 'package:itspass_user/features/authentication/data/repositories/auth_repository_impl.dart'
     as _i664;
-import 'package:uber_users_app/features/authentication/domain/repositories/auth_repository.dart'
+import 'package:itspass_user/features/authentication/domain/repositories/auth_repository.dart'
     as _i986;
-import 'package:uber_users_app/features/authentication/domain/usecases/get_user_data.dart'
+import 'package:itspass_user/features/authentication/domain/usecases/get_user_data.dart'
     as _i771;
-import 'package:uber_users_app/features/authentication/domain/usecases/save_user_data.dart'
+import 'package:itspass_user/features/authentication/domain/usecases/save_user_data.dart'
     as _i803;
-import 'package:uber_users_app/features/authentication/domain/usecases/sign_in_with_phone.dart'
+import 'package:itspass_user/features/authentication/domain/usecases/sign_in_with_phone.dart'
     as _i598;
-import 'package:uber_users_app/features/authentication/domain/usecases/verify_otp.dart'
+import 'package:itspass_user/features/authentication/domain/usecases/verify_otp.dart'
     as _i553;
-import 'package:uber_users_app/features/authentication/presentation/bloc/auth_bloc.dart'
+import 'package:itspass_user/features/authentication/presentation/bloc/auth_bloc.dart'
     as _i94;
-import 'package:uber_users_app/injection/app_module.dart' as _i285;
+import 'package:itspass_user/injection/app_module.dart' as _i285;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -55,7 +55,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i555.ApiService>(
         () => _i555.ApiService(gh<_i634.ApiClient>()));
     gh.lazySingleton<_i951.AuthApiDataSource>(() => _i951.AuthApiDataSourceImpl(
-          apiService: gh<_i555.ApiService>(),
           googleSignIn: gh<_i116.GoogleSignIn>(),
           sharedPreferences: gh<_i460.SharedPreferences>(),
         ));

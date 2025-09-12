@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:uber_users_app/appInfo/app_info.dart';
-import 'package:uber_users_app/global/global_var.dart';
-import 'package:uber_users_app/methods/common_methods.dart';
-import 'package:uber_users_app/models/address_models.dart';
-import 'package:uber_users_app/models/prediction_model.dart';
-import 'package:uber_users_app/widgets/loading_dialog.dart';
+import 'package:itspass_user/appInfo/app_info.dart';
+import 'package:itspass_user/global/global_var.dart';
+import 'package:itspass_user/methods/common_methods.dart';
+import 'package:itspass_user/models/address_models.dart';
+import 'package:itspass_user/models/prediction_model.dart';
+import 'package:itspass_user/widgets/loading_dialog.dart';
 
 class PredictionPlaceUI extends StatefulWidget {
   final PredictionModel? predictedPlaceData;

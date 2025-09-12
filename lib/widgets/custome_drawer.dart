@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:uber_users_app/core/constants/app_dimensions.dart';
-import 'package:uber_users_app/core/theme/app_theme.dart';
-import 'package:uber_users_app/global/global_var.dart';
-import 'package:uber_users_app/pages/about_page.dart';
-import 'package:uber_users_app/pages/profile_page.dart';
-import 'package:uber_users_app/pages/trips_history_page.dart';
-import 'package:uber_users_app/widgets/sign_out_dialog.dart';
+import 'package:itspass_user/core/constants/app_dimensions.dart';
+import 'package:itspass_user/core/theme/app_theme.dart';
+import 'package:itspass_user/generated/l10n/app_localizations.dart';
+import 'package:itspass_user/pages/about_page.dart';
+import 'package:itspass_user/pages/profile_page.dart';
+import 'package:itspass_user/pages/settings_page.dart';
+import 'package:itspass_user/pages/trips_history_page.dart';
+import 'package:itspass_user/widgets/sign_out_dialog.dart';
 
 class CustomDrawer extends StatelessWidget {
   final String userName;
@@ -21,6 +22,8 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+    String userEmail = "user@example.com"; // TODO: Get from user data
     return Drawer(
       backgroundColor: AppTheme.surfaceColor,
       width: 280.w,
@@ -28,7 +31,7 @@ class CustomDrawer extends StatelessWidget {
         children: [
           // Custom Header
           Container(
-            height: 200.h,
+            height: 210.h,
             width: double.infinity,
             decoration: BoxDecoration(
               gradient: AppTheme.primaryGradient,
@@ -44,8 +47,8 @@ class CustomDrawer extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: 80.w,
-                      height: 80.w,
+                      width: 70.w,
+                      height: 70.w,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
@@ -61,16 +64,16 @@ class CustomDrawer extends StatelessWidget {
                         ],
                       ),
                       child: CircleAvatar(
-                        radius: 40.w,
+                        radius: 35.w,
                         backgroundColor: Colors.white,
                         child: Image.asset(
                           "assets/images/avatarman.png",
-                          width: 60.w,
-                          height: 60.w,
+                          width: 50.w,
+                          height: 50.w,
                         ),
                       ),
                     ),
-                    SizedBox(height: AppDimensions.paddingM),
+                    SizedBox(height: AppDimensions.paddingS),
                     Text(
                       userName,
                       style: AppTheme.headingStyle.copyWith(
@@ -95,14 +98,14 @@ class CustomDrawer extends StatelessWidget {
           Expanded(
             child: ListView(
               padding: EdgeInsets.symmetric(
-                vertical: AppDimensions.paddingM,
+                vertical: AppDimensions.paddingS,
                 horizontal: AppDimensions.paddingS,
               ),
               children: [
 
                 _buildDrawerItem(
                   icon: Icons.person,
-                  title: "My Profile",
+                  title: localizations.myProfile,
                   onTap: () {
                     Navigator.pop(context);
                     Navigator.push(
@@ -114,7 +117,7 @@ class CustomDrawer extends StatelessWidget {
                 
                 _buildDrawerItem(
                   icon: Icons.history,
-                  title: "Trip History",
+                  title: localizations.tripHistory,
                   onTap: () {
                     Navigator.pop(context);
                     Navigator.push(
@@ -126,16 +129,20 @@ class CustomDrawer extends StatelessWidget {
                 
                 _buildDrawerItem(
                   icon: Icons.settings,
-                  title: "Settings",
+                  title: localizations.settings,
                   onTap: () {
                     Navigator.pop(context);
-                    // TODO: Implement settings functionality
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SettingsPage()),
+                    );
                   },
                 ),
                 
+                
                 _buildDrawerItem(
                   icon: Icons.privacy_tip,
-                  title: "Privacy Policy",
+                  title: localizations.privacyPolicy,
                   onTap: () {
                     Navigator.pop(context);
                     // TODO: Implement privacy functionality
@@ -144,7 +151,7 @@ class CustomDrawer extends StatelessWidget {
                 
                 _buildDrawerItem(
                   icon: Icons.help_outline,
-                  title: "Help & Support",
+                  title: localizations.helpSupport,
                   onTap: () {
                     Navigator.pop(context);
                     // TODO: Implement help functionality
@@ -153,7 +160,7 @@ class CustomDrawer extends StatelessWidget {
                 
                 _buildDrawerItem(
                   icon: Icons.info_outline,
-                  title: "About",
+                  title: localizations.about,
                   onTap: () {
                     Navigator.pop(context);
                     Navigator.push(
@@ -165,7 +172,7 @@ class CustomDrawer extends StatelessWidget {
                 
                 _buildDrawerItem(
                   icon: Icons.star_rate,
-                  title: "Rate Us",
+                  title: localizations.rateUs,
                   onTap: () {
                     Navigator.pop(context);
                     // TODO: Implement rate us functionality
@@ -181,7 +188,7 @@ class CustomDrawer extends StatelessWidget {
                 
                 _buildDrawerItem(
                   icon: Icons.logout,
-                  title: "Logout",
+                  title: localizations.logout,
                   iconColor: AppTheme.errorColor,
                   textColor: AppTheme.errorColor,
                   onTap: () {
@@ -218,7 +225,7 @@ class CustomDrawer extends StatelessWidget {
   }) {
     return Container(
       margin: EdgeInsets.symmetric(
-        vertical: AppDimensions.paddingXS,
+        vertical: 2.h,
         horizontal: AppDimensions.paddingS,
       ),
       child: ListTile(
