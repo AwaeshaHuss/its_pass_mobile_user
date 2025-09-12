@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
 import 'package:itspass_user/authentication/user_information_screen.dart';
 import 'package:itspass_user/core/constants/app_dimensions.dart';
@@ -7,6 +8,9 @@ import 'package:itspass_user/core/theme/app_theme.dart';
 import 'package:itspass_user/generated/l10n/app_localizations.dart';
 import 'package:itspass_user/methods/common_methods.dart';
 import 'package:itspass_user/pages/home_page.dart';
+import 'package:itspass_user/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:itspass_user/features/authentication/presentation/bloc/auth_event.dart';
+import 'package:itspass_user/features/authentication/presentation/bloc/auth_state.dart';
 
 class OTPScreen extends StatefulWidget {
   final String verificationId;
@@ -23,19 +27,48 @@ class _OTPScreenState extends State<OTPScreen> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context);
-    // TODO: Replace with BLoC pattern for OTP verification
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppTheme.backgroundColor,
-        body: Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: AppDimensions.paddingXL,
-              horizontal: AppDimensions.paddingL,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+        body: BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state is OTPVerificationSuccess) {
+              // Navigate to UserInformationScreen
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const UserInformationScreen(),
+                ),
+              );
+            } else if (state is Authenticated) {
+              // Navigate to HomePage if user is already authenticated
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage()),
+                (route) => false,
+              );
+            } else if (state is AuthError) {
+              // Show error message
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                  backgroundColor: AppTheme.errorColor,
+                ),
+              );
+            }
+          },
+          child: BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              bool isLoading = state is AuthLoading;
+              return Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: AppDimensions.paddingXL,
+                    horizontal: AppDimensions.paddingL,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
                 Text(
                   localizations.verifyOTP,
                   style: AppTheme.headingStyle,
@@ -106,8 +139,17 @@ class _OTPScreenState extends State<OTPScreen> {
 
                 SizedBox(height: AppDimensions.paddingXXL),
                 
-                // TODO: Replace with BLoC state management
-                const SizedBox.shrink(),
+                // Loading indicator
+                if (isLoading)
+                  SizedBox(
+                    height: 20.h,
+                    width: 20.w,
+                    child: const CircularProgressIndicator(
+                      strokeWidth: 2,
+                    ),
+                  )
+                else
+                  const SizedBox.shrink(),
 
                 SizedBox(height: AppDimensions.paddingXL),
 
@@ -129,7 +171,7 @@ class _OTPScreenState extends State<OTPScreen> {
                         Size(120.w, AppDimensions.buttonHeightM),
                       ),
                     ),
-                    onPressed: () {
+                    onPressed: isLoading ? null : () {
                       // TODO: Implement resend OTP functionality
                     },
                     child: Text(
@@ -141,8 +183,11 @@ class _OTPScreenState extends State<OTPScreen> {
                     ),
                   ),
                 ),
-              ],
-            ),
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ),
@@ -150,22 +195,12 @@ class _OTPScreenState extends State<OTPScreen> {
   }
 
   void verifyOTP({required String smsCode}) async {
-    // TODO: Implement OTP verification with BLoC pattern
-    // For now, navigate to user information screen
-    navigate(isSingedIn: false);
-  }
-
-  void navigate({required bool isSingedIn}) {
-    if (isSingedIn) {
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-          (route) => false);
-    } else {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => const UserInformationScreen()));
-    }
+    // Use BLoC pattern for OTP verification
+    context.read<AuthBloc>().add(
+      VerifyOTPEvent(
+        verificationId: widget.verificationId,
+        smsCode: smsCode,
+      ),
+    );
   }
 }

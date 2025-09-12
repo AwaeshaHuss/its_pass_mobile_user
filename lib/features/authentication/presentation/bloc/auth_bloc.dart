@@ -39,16 +39,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(const AuthLoading());
 
-    final result = await _signInWithPhone(phoneNumber: event.phoneNumber);
+    try {
+      final result = await _signInWithPhone(phoneNumber: event.phoneNumber);
 
-    result.fold(
-      (failure) => emit(AuthError(message: failure.toString())),
-      (_) {
-        // Note: In a real implementation, you'd need to handle the verification ID
-        // from the API's callback. For now, we'll emit a success state.
-        emit(const PhoneSignInSuccess(verificationId: 'temp_verification_id'));
-      },
-    );
+      result.fold(
+        (failure) => emit(AuthError(message: 'Please check your phone number and try again')),
+        (_) {
+          // Generate a mock verification ID based on phone number for offline mode
+          final mockVerificationId = 'mock_${event.phoneNumber.replaceAll('+', '').replaceAll(' ', '')}_${DateTime.now().millisecondsSinceEpoch}';
+          _verificationId = mockVerificationId;
+          emit(PhoneSignInSuccess(verificationId: mockVerificationId));
+        },
+      );
+    } catch (e) {
+      // Handle any unexpected errors gracefully
+      emit(const AuthError(message: 'Authentication service temporarily unavailable. Please try again.'));
+    }
   }
 
   void _onVerifyOTP(
@@ -57,19 +63,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(const AuthLoading());
 
-    final result = await _verifyOTP(
-      verificationId: event.verificationId,
-      smsCode: event.smsCode,
-    );
+    try {
+      final result = await _verifyOTP(
+        verificationId: event.verificationId,
+        smsCode: event.smsCode,
+      );
 
-    result.fold(
-      (failure) => emit(AuthError(message: failure.toString())),
-      (user) {
-        _verificationId = null;
-        emit(OTPVerificationSuccess(user: user));
-        emit(Authenticated(user: user));
-      },
-    );
+      result.fold(
+        (failure) => emit(const AuthError(message: 'Invalid OTP. Please try again.')),
+        (user) {
+          _verificationId = null;
+          emit(OTPVerificationSuccess(user: user));
+          emit(Authenticated(user: user));
+        },
+      );
+    } catch (e) {
+      // Handle any unexpected errors gracefully
+      emit(const AuthError(message: 'Verification failed. Please try again.'));
+    }
   }
 
   void _onSaveUserData(
@@ -95,15 +106,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(const AuthLoading());
 
-    final result = await _getUserData();
+    try {
+      final result = await _getUserData();
 
-    result.fold(
-      (failure) => emit(AuthError(message: failure.toString())),
-      (user) {
-        emit(UserDataLoaded(user: user));
-        emit(Authenticated(user: user));
-      },
-    );
+      result.fold(
+        (failure) => emit(const AuthError(message: 'Unable to load user data. Please try again.')),
+        (user) {
+          emit(UserDataLoaded(user: user));
+          emit(Authenticated(user: user));
+        },
+      );
+    } catch (e) {
+      // Handle any unexpected errors gracefully
+      emit(const AuthError(message: 'Data loading failed. Please try again.'));
+    }
   }
 
   void _onSignOut(

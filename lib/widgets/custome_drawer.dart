@@ -7,6 +7,7 @@ import 'package:itspass_user/pages/about_page.dart';
 import 'package:itspass_user/pages/profile_page.dart';
 import 'package:itspass_user/pages/settings_page.dart';
 import 'package:itspass_user/pages/trips_history_page.dart';
+import 'package:itspass_user/pages/wallet_screen.dart';
 import 'package:itspass_user/widgets/sign_out_dialog.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -123,6 +124,18 @@ class CustomDrawer extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const TripsHistoryPage()),
+                    );
+                  },
+                ),
+                
+                _buildDrawerItem(
+                  icon: Icons.account_balance_wallet,
+                  title: "Wallet",
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const WalletScreen()),
                     );
                   },
                 ),

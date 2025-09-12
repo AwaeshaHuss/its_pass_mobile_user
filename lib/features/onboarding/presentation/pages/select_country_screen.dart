@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:itspass_user/core/constants/app_dimensions.dart';
 import 'package:itspass_user/core/theme/app_theme.dart';
-import 'package:itspass_user/features/authentication/presentation/bloc/auth_bloc.dart';
-import 'package:itspass_user/features/authentication/presentation/bloc/auth_event.dart';
-import 'package:itspass_user/features/authentication/presentation/bloc/auth_state.dart';
 import 'package:itspass_user/features/authentication/presentation/pages/auth_wrapper.dart';
 import 'package:itspass_user/features/settings/providers/language_provider.dart';
 
@@ -83,14 +79,17 @@ class _SelectCountryScreenState extends State<SelectCountryScreen> {
           .setLanguage(_selectedLanguage);
     }
 
-    // Check authentication status
-    if (mounted) {
-      context.read<AuthBloc>().add(const GetUserDataEvent());
-    }
-
     setState(() {
       _isLoading = false;
     });
+
+    // Navigate directly to AuthWrapper - let it handle authentication logic
+    if (mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const AuthWrapper()),
+      );
+    }
   }
 
   void _selectCountry(String countryCode) {
@@ -109,22 +108,7 @@ class _SelectCountryScreenState extends State<SelectCountryScreen> {
   Widget build(BuildContext context) {
     final isArabic = _selectedLanguage == 'ar';
     
-    return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
-        // Always navigate to AuthWrapper after checking user data
-        // AuthWrapper will handle proper routing based on authentication status
-        if (state is Authenticated || 
-            state is UserDataLoaded || 
-            state is AuthError || 
-            state is AuthInitial ||
-            state is Unauthenticated) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const AuthWrapper()),
-          );
-        }
-      },
-      child: Scaffold(
+    return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       body: SafeArea(
         child: Padding(
@@ -372,7 +356,6 @@ class _SelectCountryScreenState extends State<SelectCountryScreen> {
             ),
           ),
         ),
-      ),
       ),
     );
   }

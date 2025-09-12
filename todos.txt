@@ -8,7 +8,8 @@ todos:
 - Done(Sub task) =>  remove LanguageSelectionScreen safely
 - Done(Sub task) => replace safely LanguageSelectionScreen with SelectCountryScreen, this screen is just intended to select the country for the user, based on the selection change the country around the whole app, also this screen controls the selected language, this screen is the first screen that the user will see in the screens flow
 
-- Current change the app name to itspass_user
+- Done => change the app name to itspass_user
+- Current => Create WalletScreen => UI only
 
 - test the done work and ensure its error free 100%
 - commit push safely

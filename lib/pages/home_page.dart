@@ -493,6 +493,127 @@ class _HomePageState extends State<HomePage> {
 
   CommonMethods commonMethods = CommonMethods();
 
+  void _calculateFareAndTime() {
+    int totalMinutes = 0;
+    if (estimatedTimeCar.contains("hours")) {
+      List<String> timeParts = estimatedTimeCar.split(" ");
+      int hours = int.tryParse(timeParts[0]) ?? 0;
+      int minutes = int.tryParse(timeParts[2]) ?? 0;
+      totalMinutes = (hours * 60) + minutes;
+    } else {
+      totalMinutes = int.tryParse(estimatedTimeCar.split(" ")[0]) ?? 0;
+    }
+
+    if (selectedVehicle == "Car") {
+      setState(() {
+        actualFareAmount = actualFareAmountCar;
+        estimatedTime = estimatedTimeCar;
+      });
+    } else if (selectedVehicle == "Auto") {
+      setState(() {
+        actualFareAmount = actualFareAmountCar * 0.8;
+        int updatedMinutes = (totalMinutes * 1.2).toInt();
+        estimatedTime = commonMethods.formatTime(updatedMinutes);
+      });
+    } else if (selectedVehicle == "Bike") {
+      setState(() {
+        actualFareAmount = actualFareAmountCar * 0.4;
+        int updatedMinutes = (totalMinutes * 0.8).toInt();
+        estimatedTime = commonMethods.formatTime(updatedMinutes);
+      });
+    }
+  }
+
+  Widget _buildVehicleOption(String vehicleType, String imagePath, double fare, String time) {
+    bool isSelected = selectedVehicle == vehicleType;
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            selectedVehicle = vehicleType;
+          });
+          // Recalculate fare when vehicle changes
+          if (tripDirectionDetailsInfo != null) {
+            _calculateFareAndTime();
+          }
+        },
+        child: Container(
+          padding: EdgeInsets.all(AppDimensions.paddingM),
+          decoration: BoxDecoration(
+            color: isSelected ? AppTheme.primaryColor.withOpacity(0.1) : Colors.white,
+            border: Border.all(
+              color: isSelected ? AppTheme.primaryColor : AppTheme.dividerColor,
+              width: isSelected ? 2 : 1,
+            ),
+            borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+          ),
+          child: Column(
+            children: [
+              Image.asset(
+                imagePath,
+                width: 40.w,
+                height: 30.h,
+                errorBuilder: (context, error, stackTrace) {
+                  return Icon(
+                    Icons.directions_car,
+                    size: 30.sp,
+                    color: AppTheme.primaryColor,
+                  );
+                },
+              ),
+              SizedBox(height: AppDimensions.paddingXS),
+              Text(
+                vehicleType,
+                style: AppTheme.captionStyle.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: isSelected ? AppTheme.primaryColor : AppTheme.textPrimaryColor,
+                ),
+              ),
+              SizedBox(height: AppDimensions.paddingXS),
+              Text(
+                '${fare.toStringAsFixed(0)} JOD',
+                style: AppTheme.captionStyle.copyWith(
+                  fontSize: 12.sp,
+                  color: AppTheme.textSecondaryColor,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _confirmRideBooking() {
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => LoadingDialog(
+        messageText: "Booking your ride...",
+      ),
+    );
+
+    // Simulate booking process
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.pop(context); // Close loading dialog
+      
+      // Show success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Ride booked successfully! Fare: ${actualFareAmount.toStringAsFixed(0)} JOD',
+          ),
+          backgroundColor: AppTheme.successColor,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+      
+      // Transition to request container to find driver
+      displayRequestContainer();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     String? userAddress = Provider.of<AppInfoClass>(context, listen: false)
@@ -518,39 +639,9 @@ class _HomePageState extends State<HomePage> {
           tripDirectionDetailsInfo!.durationTextString.toString();
     }
 
-    void calculateFareAndTime() {
-      int totalMinutes = 0;
-      if (estimatedTimeCar.contains("hours")) {
-        List<String> timeParts = estimatedTimeCar.split(" ");
-        int hours = int.tryParse(timeParts[0]) ?? 0;
-        int minutes = int.tryParse(timeParts[2]) ?? 0;
-        totalMinutes = (hours * 60) + minutes;
-      } else {
-        totalMinutes = int.tryParse(estimatedTimeCar.split(" ")[0]) ?? 0;
-      }
-
-      if (selectedVehicle == "Car") {
-        setState(() {
-          actualFareAmount = actualFareAmountCar;
-          estimatedTime = estimatedTimeCar;
-        });
-      } else if (selectedVehicle == "Auto") {
-        setState(() {
-          actualFareAmount = actualFareAmountCar * 0.8;
-          int updatedMinutes = (totalMinutes * 1.2).toInt();
-          estimatedTime = commonMethods.formatTime(updatedMinutes);
-        });
-      } else if (selectedVehicle == "Bike") {
-        setState(() {
-          actualFareAmount = actualFareAmountCar * 0.4;
-          int updatedMinutes = (totalMinutes * 0.8).toInt();
-          estimatedTime = commonMethods.formatTime(updatedMinutes);
-        });
-      }
-    }
 
     if (tripDirectionDetailsInfo != null) {
-      calculateFareAndTime();
+      _calculateFareAndTime();
     }
 
     // final appProvider = Provider.of<AppInfoClass>(context, listen: false);
@@ -680,7 +771,7 @@ class _HomePageState extends State<HomePage> {
                                       builder: (c) =>
                                           const SearchDestinationPlace()));
 
-                              if (responseFromSearchPage == "placeSelected") {
+                              if (responseFromSearchPage != null && responseFromSearchPage is Map) {
                                 displayUserRideDetailsContainer();
                               }
                             },
@@ -720,6 +811,208 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
+                ),
+              ),
+            ),
+
+            // Ride Details Container with Confirm Button
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: AnimatedSize(
+                duration: const Duration(milliseconds: 150),
+                child: Container(
+                  height: rideDetailsContainerHeight,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(AppDimensions.radiusXL),
+                      topRight: Radius.circular(AppDimensions.radiusXL),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: AppDimensions.elevationL,
+                        spreadRadius: 0.5,
+                        offset: const Offset(0, -2),
+                      ),
+                    ],
+                  ),
+                  child: rideDetailsContainerHeight > 0
+                      ? SingleChildScrollView(
+                          child: Padding(
+                            padding: EdgeInsets.all(AppDimensions.paddingL),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Handle bar
+                                Center(
+                                  child: Container(
+                                    width: 40.w,
+                                    height: 4.h,
+                                    decoration: BoxDecoration(
+                                      color: AppTheme.dividerColor,
+                                      borderRadius: BorderRadius.circular(2),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: AppDimensions.paddingL),
+
+                                // Trip Details Header
+                                Text(
+                                  'Trip Details',
+                                  style: AppTheme.headingStyle.copyWith(
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(height: AppDimensions.paddingM),
+
+                                // Route Info
+                                if (tripDirectionDetailsInfo != null) ...[
+                                  Container(
+                                    padding: EdgeInsets.all(AppDimensions.paddingM),
+                                    decoration: BoxDecoration(
+                                      color: AppTheme.surfaceColor,
+                                      borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.route,
+                                          color: AppTheme.primaryColor,
+                                          size: AppDimensions.iconSizeM,
+                                        ),
+                                        SizedBox(width: AppDimensions.paddingM),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Distance: ${tripDirectionDetailsInfo!.distanceTextString}',
+                                                style: AppTheme.bodyStyle.copyWith(
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              SizedBox(height: AppDimensions.paddingXS),
+                                              Text(
+                                                'Duration: ${tripDirectionDetailsInfo!.durationTextString}',
+                                                style: AppTheme.bodyStyle.copyWith(
+                                                  color: AppTheme.textSecondaryColor,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(height: AppDimensions.paddingM),
+                                ],
+
+                                // Vehicle Selection
+                                Text(
+                                  'Select Vehicle',
+                                  style: AppTheme.bodyStyle.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16.sp,
+                                  ),
+                                ),
+                                SizedBox(height: AppDimensions.paddingS),
+                                
+                                Row(
+                                  children: [
+                                    _buildVehicleOption('Car', 'assets/vehicles/home_car.png', actualFareAmountCar, estimatedTimeCar),
+                                    SizedBox(width: AppDimensions.paddingS),
+                                    _buildVehicleOption('Auto', 'assets/vehicles/auto.png', actualFareAmountCar * 0.8, estimatedTime),
+                                    SizedBox(width: AppDimensions.paddingS),
+                                    _buildVehicleOption('Bike', 'assets/vehicles/bike.png', actualFareAmountCar * 0.4, estimatedTime),
+                                  ],
+                                ),
+                                SizedBox(height: AppDimensions.paddingL),
+
+                                // Payment Method
+                                Text(
+                                  'Payment Method',
+                                  style: AppTheme.bodyStyle.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16.sp,
+                                  ),
+                                ),
+                                SizedBox(height: AppDimensions.paddingS),
+                                
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: AppDimensions.paddingM,
+                                    vertical: AppDimensions.paddingS,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: AppTheme.dividerColor),
+                                    borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        selectedPaymentMethod == 'Cash' ? Icons.money : Icons.credit_card,
+                                        color: AppTheme.primaryColor,
+                                        size: AppDimensions.iconSizeM,
+                                      ),
+                                      SizedBox(width: AppDimensions.paddingM),
+                                      Expanded(
+                                        child: Text(
+                                          selectedPaymentMethod,
+                                          style: AppTheme.bodyStyle,
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: AppTheme.textSecondaryColor,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: AppDimensions.paddingXL),
+
+                                // Confirm Ride Button
+                                SizedBox(
+                                  width: double.infinity,
+                                  height: AppDimensions.buttonHeightL,
+                                  child: ElevatedButton(
+                                    onPressed: _confirmRideBooking,
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppTheme.primaryColor,
+                                      foregroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+                                      ),
+                                      elevation: 4,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.directions_car,
+                                          size: AppDimensions.iconSizeM,
+                                        ),
+                                        SizedBox(width: AppDimensions.paddingS),
+                                        Text(
+                                          'Confirm Ride - ${actualFareAmount.toStringAsFixed(0)} JOD',
+                                          style: AppTheme.buttonTextStyle.copyWith(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: AppDimensions.paddingM),
+                              ],
+                            ),
+                          ),
+                        )
+                      : const SizedBox.shrink(),
                 ),
               ),
             ),

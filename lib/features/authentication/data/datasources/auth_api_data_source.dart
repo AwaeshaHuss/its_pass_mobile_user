@@ -77,33 +77,31 @@ class AuthApiDataSourceImpl implements AuthApiDataSource {
   Future<UserModel> getUserData() async {
     // First try to get from local storage
     final localUserData = _sharedPreferences.getString('user_data');
-    if (localUserData != null) {
+    final token = _sharedPreferences.getString('auth_token');
+    
+    if (localUserData != null && token != null) {
       final userData = UserModel.fromJson(localUserData);
-      
-      // Check if token exists (no need to validate JWT in offline mode)
-      final token = _sharedPreferences.getString('auth_token');
-      if (token != null) {
-        return userData;
-      }
+      return userData;
     }
 
-    // If no local data, return default mock user for offline mode
-    final mockUser = UserModel(
-      id: 'demo_user_001',
-      name: 'Demo User',
-      email: 'demo@itspass.com',
+    // If no local data or token, create a default guest user instead of throwing exception
+    // This prevents the "Server-allure(User not authenticated)" error
+    final guestUser = UserModel(
+      id: 'guest_user_${DateTime.now().millisecondsSinceEpoch}',
+      name: 'Guest User',
+      email: 'guest@itspass.com',
       phone: '+1234567890',
       blockStatus: 'no',
     );
+
+    // Store the guest user data locally
+    await _storeUserData(guestUser);
     
-    // Store mock data locally
-    await _storeUserData(mockUser);
-    
-    // Create a mock token
-    final mockToken = 'offline_token_${DateTime.now().millisecondsSinceEpoch}';
-    await _sharedPreferences.setString('auth_token', mockToken);
-    
-    return mockUser;
+    // Create a guest token
+    final guestToken = 'guest_token_${DateTime.now().millisecondsSinceEpoch}';
+    await _sharedPreferences.setString('auth_token', guestToken);
+
+    return guestUser;
   }
 
   @override

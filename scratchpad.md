@@ -1,9 +1,24 @@
 # Scratchpad
 
-## Current Task: Firebase Removal & API Integration - COMPLETED ✅
+## Current Task: Remove API Dependencies & Implement Mock Services - IN PROGRESS 🔧
 
 ### Task Overview
-Remove Firebase integration safely while keeping Firebase Messaging for push notifications. Replace Firebase services with API-based services for better control and flexibility.
+Remove all API integrations except Maps services and implement mock authentication and search functionality to ensure error-free experience.
+
+### Issues to Fix
+- Server failure exceptions in authentication flow
+- Need mock authentication process that works offline
+- Keep Google Places API for search functionality
+- Ensure authentication is error-free
+
+### Progress
+- [x] Identify API integration issues
+- [x] Keep Google Places API for search functionality
+- [x] Implement mock authentication without server calls
+- [x] Fix server failure exceptions in authentication flow
+- [x] Update authentication screens to use BLoC pattern
+- [x] Create working offline authentication flow
+- [ ] Test complete authentication flow
 
 ## Firebase Removal Analysis Complete
 

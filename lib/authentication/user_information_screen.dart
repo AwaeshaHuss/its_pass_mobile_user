@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:itspass_user/core/constants/app_dimensions.dart';
 import 'package:itspass_user/core/theme/app_theme.dart';
+import 'package:itspass_user/features/authentication/domain/entities/user_entity.dart';
+import 'package:itspass_user/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:itspass_user/features/authentication/presentation/bloc/auth_event.dart';
+import 'package:itspass_user/features/authentication/presentation/bloc/auth_state.dart';
 import 'package:itspass_user/methods/common_methods.dart';
 import 'package:itspass_user/pages/home_page.dart';
-
-import '../models/user_model.dart';
 
 class UserInformationScreen extends StatefulWidget {
   const UserInformationScreen({Key? key}) : super(key: key);
@@ -35,81 +37,99 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Replace with BLoC pattern
-
-    return Scaffold(
-      backgroundColor: AppTheme.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: AppTheme.primaryColor,
-        elevation: AppDimensions.elevationM,
-        centerTitle: true,
-        title: Text(
-          'Profile Setup',
-          style: AppTheme.titleStyle.copyWith(color: Colors.white),
-        ),
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: AppDimensions.paddingXL,
-                horizontal: AppDimensions.paddingL,
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is UserDataSaved || state is Authenticated) {
+          // Navigate to home screen when user data is saved
+          navigateToHomeScreen();
+        } else if (state is AuthError) {
+          commonMethods.displaySnackBar(state.message, context);
+        }
+      },
+      child: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          bool isLoading = state is AuthLoading;
+          return Scaffold(
+            backgroundColor: AppTheme.backgroundColor,
+            appBar: AppBar(
+              backgroundColor: AppTheme.primaryColor,
+              elevation: AppDimensions.elevationM,
+              centerTitle: true,
+              title: Text(
+                'Profile Setup',
+                style: AppTheme.titleStyle.copyWith(color: Colors.white),
               ),
-              child: Column(
-                children: [
-                  Column(
-                    children: [
-                      // Input Fields
-                      _buildInputField(
-                        controller: nameController,
-                        hintText: 'Enter Your Full Name',
-                        icon: Icons.person,
-                        keyboardType: TextInputType.name,
-                        maxLength: 25,
-                      ),
+              iconTheme: const IconThemeData(color: Colors.white),
+            ),
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: AppDimensions.paddingXL,
+                      horizontal: AppDimensions.paddingL,
+                    ),
+                    child: Column(
+                      children: [
+                        Column(
+                          children: [
+                            // Input Fields
+                            _buildInputField(
+                              controller: nameController,
+                              hintText: 'Enter Your Full Name',
+                              icon: Icons.person,
+                              keyboardType: TextInputType.name,
+                              maxLength: 25,
+                            ),
 
-                      SizedBox(height: AppDimensions.paddingL),
-                      
-                      _buildInputField(
-                        controller: gmailController,
-                        hintText: 'Enter Your Email Address',
-                        icon: Icons.email,
-                        keyboardType: TextInputType.emailAddress,
-                        maxLength: 50,
-                      ),
-                      
-                      SizedBox(height: AppDimensions.paddingL),
-                      
-                      _buildInputField(
-                        controller: phoneController,
-                        hintText: 'Enter Your Phone Number',
-                        icon: Icons.phone,
-                        keyboardType: TextInputType.phone,
-                        maxLength: 15,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: AppDimensions.paddingXXL),
-                  
-                  SizedBox(
-                    width: double.infinity,
-                    height: AppDimensions.buttonHeightL,
-                    child: ElevatedButton(
-                      onPressed: saveUserDataToFireStore,
-                      style: AppTheme.primaryButtonStyle,
-                      child: Text(
-                        "Continue",
-                        style: AppTheme.buttonTextStyle,
-                      ),
+                            SizedBox(height: AppDimensions.paddingL),
+                            
+                            _buildInputField(
+                              controller: gmailController,
+                              hintText: 'Enter Your Email Address',
+                              icon: Icons.email,
+                              keyboardType: TextInputType.emailAddress,
+                              maxLength: 50,
+                            ),
+                            
+                            SizedBox(height: AppDimensions.paddingL),
+                            
+                            _buildInputField(
+                              controller: phoneController,
+                              hintText: 'Enter Your Phone Number',
+                              icon: Icons.phone,
+                              keyboardType: TextInputType.phone,
+                              maxLength: 15,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: AppDimensions.paddingXXL),
+                        
+                        SizedBox(
+                          width: double.infinity,
+                          height: AppDimensions.buttonHeightL,
+                          child: ElevatedButton(
+                            onPressed: isLoading ? null : saveUserDataToFireStore,
+                            style: AppTheme.primaryButtonStyle,
+                            child: isLoading
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  )
+                                : Text(
+                                    "Continue",
+                                    style: AppTheme.buttonTextStyle,
+                                  ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
@@ -153,20 +173,20 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
     );
   }
 
-  // store user data via API
+  // store user data via BLoC
   void saveUserDataToFireStore() async {
-    // TODO: Implement API-based user data saving
-    UserModel userModel = UserModel(
-        id: "temp_id", // TODO: Get from API response
+    if (nameController.text.length >= 3) {
+      // Create user entity and use BLoC to save
+      final userEntity = UserEntity(
+        id: "temp_id_${DateTime.now().millisecondsSinceEpoch}",
         name: nameController.text.trim(),
         phone: phoneController.text.trim(),
         email: gmailController.text.trim(),
-        blockStatus: "no");
+        blockStatus: "no",
+      );
 
-    if (nameController.text.length >= 3) {
-      // TODO: Call API to save user data
-      // For now, navigate to home screen
-      navigateToHomeScreen();
+      // Use BLoC to save user data
+      context.read<AuthBloc>().add(SaveUserDataEvent(user: userEntity));
     } else {
       commonMethods.displaySnackBar(
           'Name must be atleast 3 characters', context);
