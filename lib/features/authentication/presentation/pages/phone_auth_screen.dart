@@ -1,9 +1,8 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:itspass_user/features/authentication/presentation/bloc/auth_bloc.dart';
-import 'package:itspass_user/features/authentication/presentation/bloc/auth_event.dart';
-import 'package:itspass_user/features/authentication/presentation/bloc/auth_state.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:itspass_user/core/constants/app_dimensions.dart';
+import 'package:itspass_user/core/theme/app_theme.dart';
 import 'package:itspass_user/features/authentication/presentation/pages/otp_verification_screen.dart';
 
 class PhoneAuthScreen extends StatefulWidget {
@@ -17,15 +16,15 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
   final TextEditingController phoneController = TextEditingController();
 
   Country selectedCountry = Country(
-    phoneCode: '92',
-    countryCode: 'PK',
+    phoneCode: '962',
+    countryCode: 'JO',
     e164Sc: 0,
     geographic: true,
     level: 1,
-    name: 'Pakistan',
-    example: 'Pakistan',
-    displayName: 'Pakistan',
-    displayNameNoCountryCode: 'PK',
+    name: 'Jordan',
+    example: 'Jordan',
+    displayName: 'Jordan',
+    displayNameNoCountryCode: 'JO',
     e164Key: '',
   );
 
@@ -39,58 +38,73 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: BlocListener<AuthBloc, AuthState>(
-          listener: (context, state) {
-            if (state is PhoneSignInSuccess) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => OTPVerificationScreen(
-                    verificationId: state.verificationId,
-                    phoneNumber: '+${selectedCountry.phoneCode}${phoneController.text}',
-                  ),
-                ),
-              );
-            } else if (state is AuthError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            }
-          },
-          child: SingleChildScrollView(
+        backgroundColor: AppTheme.backgroundColor,
+        body: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(AppDimensions.paddingL),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 50),
+                  SizedBox(height: AppDimensions.paddingXXL),
                   
-                  // Header
-                  const Text(
-                    'Enter your phone number',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                  // Logo and Header
+                  Center(
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 80.w,
+                          height: 80.w,
+                          decoration: BoxDecoration(
+                            color: AppTheme.primaryColor,
+                            borderRadius: BorderRadius.circular(AppDimensions.radiusXL),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppTheme.primaryColor.withOpacity(0.3),
+                                blurRadius: AppDimensions.elevationL,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Icon(
+                            Icons.phone_android,
+                            color: Colors.white,
+                            size: AppDimensions.iconSizeXL,
+                          ),
+                        ),
+                        SizedBox(height: AppDimensions.paddingL),
+                        Text(
+                          'Enter your phone number',
+                          style: AppTheme.headingStyle.copyWith(
+                            fontSize: AppDimensions.fontSizeTitle,
+                          ),
+                        ),
+                        SizedBox(height: AppDimensions.paddingS),
+                        Text(
+                          'We will send you a verification code',
+                          style: AppTheme.bodyStyle.copyWith(
+                            color: AppTheme.textSecondaryColor,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'We will send you a verification code',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  const SizedBox(height: 40),
+                  
+                  SizedBox(height: AppDimensions.paddingXXL),
 
                   // Phone Input
                   Container(
+                    height: AppDimensions.inputFieldHeight,
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(8),
+                      color: AppTheme.surfaceColor,
+                      border: Border.all(color: AppTheme.dividerColor),
+                      borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: AppDimensions.elevationS,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: Row(
                       children: [
@@ -107,26 +121,29 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                             );
                           },
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 16,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: AppDimensions.paddingM,
+                              vertical: AppDimensions.paddingM,
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
                                   selectedCountry.flagEmoji,
-                                  style: const TextStyle(fontSize: 20),
+                                  style: TextStyle(fontSize: AppDimensions.fontSizeXL),
                                 ),
-                                const SizedBox(width: 8),
+                                SizedBox(width: AppDimensions.paddingS),
                                 Text(
                                   '+${selectedCountry.phoneCode}',
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
+                                  style: AppTheme.bodyStyle.copyWith(
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                const Icon(Icons.arrow_drop_down),
+                                Icon(
+                                  Icons.arrow_drop_down,
+                                  color: AppTheme.textSecondaryColor,
+                                  size: AppDimensions.iconSizeM,
+                                ),
                               ],
                             ),
                           ),
@@ -134,9 +151,9 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                         
                         // Divider
                         Container(
-                          height: 50,
+                          height: 30.h,
                           width: 1,
-                          color: Colors.grey.shade300,
+                          color: AppTheme.dividerColor,
                         ),
                         
                         // Phone Number Input
@@ -144,12 +161,16 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                           child: TextField(
                             controller: phoneController,
                             keyboardType: TextInputType.phone,
-                            decoration: const InputDecoration(
+                            style: AppTheme.bodyStyle,
+                            decoration: InputDecoration(
                               hintText: 'Phone number',
+                              hintStyle: AppTheme.bodyStyle.copyWith(
+                                color: AppTheme.textSecondaryColor,
+                              ),
                               border: InputBorder.none,
                               contentPadding: EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 16,
+                                horizontal: AppDimensions.paddingM,
+                                vertical: AppDimensions.paddingM,
                               ),
                             ),
                           ),
@@ -158,57 +179,35 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                     ),
                   ),
                   
-                  const SizedBox(height: 40),
+                  SizedBox(height: AppDimensions.paddingXXL),
 
                   // Continue Button
-                  BlocBuilder<AuthBloc, AuthState>(
-                    builder: (context, state) {
-                      final isLoading = state is AuthLoading;
-                      
-                      return SizedBox(
-                        width: double.infinity,
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: isLoading ? null : _sendOTP,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          child: isLoading
-                              ? const CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 2,
-                                )
-                              : const Text(
-                                  'Continue',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                        ),
-                      );
-                    },
+                  SizedBox(
+                    width: double.infinity,
+                    height: AppDimensions.buttonHeightL,
+                    child: ElevatedButton(
+                      onPressed: _sendOTP,
+                      style: AppTheme.primaryButtonStyle,
+                      child: Text(
+                        'Continue',
+                        style: AppTheme.buttonTextStyle,
+                      ),
+                    ),
                   ),
                   
-                  const SizedBox(height: 20),
+                  SizedBox(height: AppDimensions.paddingL),
                   
                   // Terms and Privacy
-                  const Text(
-                    'By continuing, you agree to our Terms of Service and Privacy Policy',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey,
+                  Center(
+                    child: Text(
+                      'By continuing, you agree to our Terms of Service and Privacy Policy',
+                      style: AppTheme.captionStyle,
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
                   ),
                 ],
               ),
             ),
-          ),
         ),
       ),
     );
@@ -225,7 +224,16 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
       return;
     }
 
+    // Navigate directly to OTP screen without authentication logic
     final phoneNumber = '+${selectedCountry.phoneCode}${phoneController.text.trim()}';
-    context.read<AuthBloc>().add(SignInWithPhoneEvent(phoneNumber: phoneNumber));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => OTPVerificationScreen(
+          verificationId: 'mock_verification_id',
+          phoneNumber: phoneNumber,
+        ),
+      ),
+    );
   }
 }

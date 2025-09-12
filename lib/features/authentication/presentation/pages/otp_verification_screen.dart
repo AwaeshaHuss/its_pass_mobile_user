@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
-import 'package:itspass_user/features/authentication/presentation/bloc/auth_bloc.dart';
-import 'package:itspass_user/features/authentication/presentation/bloc/auth_event.dart';
-import 'package:itspass_user/features/authentication/presentation/bloc/auth_state.dart';
 import 'package:itspass_user/pages/home_page.dart';
 
 class OTPVerificationScreen extends StatefulWidget {
@@ -43,26 +39,7 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
             onPressed: () => Navigator.pop(context),
           ),
         ),
-        body: BlocListener<AuthBloc, AuthState>(
-          listener: (context, state) {
-            if (state is OTPVerificationSuccess) {
-              // Check if user data is complete
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const HomePage(),
-                ),
-              );
-            } else if (state is AuthError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            }
-          },
-          child: Padding(
+        body: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,37 +114,26 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                 const SizedBox(height: 40),
 
                 // Verify Button
-                BlocBuilder<AuthBloc, AuthState>(
-                  builder: (context, state) {
-                    final isLoading = state is AuthLoading;
-                    
-                    return SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: isLoading ? null : () => _verifyOTP(otpController.text),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: isLoading
-                            ? const CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
-                              )
-                            : const Text(
-                                'Verify',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () => _verifyOTP(otpController.text),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                    );
-                  },
+                    ),
+                    child: const Text(
+                      'Verify',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
                 ),
                 
                 const SizedBox(height: 20),
@@ -187,7 +153,6 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                 ),
               ],
             ),
-          ),
         ),
       ),
     );
@@ -204,16 +169,16 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
       return;
     }
 
-    context.read<AuthBloc>().add(VerifyOTPEvent(
-      verificationId: widget.verificationId,
-      smsCode: otp,
-    ));
+    // Navigate directly to home page without authentication logic
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const HomePage(),
+      ),
+    );
   }
 
   void _resendCode() {
-    // Trigger resend OTP
-    context.read<AuthBloc>().add(SignInWithPhoneEvent(phoneNumber: widget.phoneNumber));
-    
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Verification code sent'),

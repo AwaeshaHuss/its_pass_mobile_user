@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:itspass_user/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:itspass_user/features/authentication/presentation/bloc/auth_state.dart';
-import 'package:itspass_user/features/onboarding/presentation/pages/select_country_screen.dart';
+import 'package:itspass_user/features/authentication/presentation/pages/auth_wrapper.dart';
 import 'package:itspass_user/pages/home_page.dart';
 
 class AppWrapper extends StatefulWidget {
@@ -26,6 +26,8 @@ class _AppWrapperState extends State<AppWrapper> {
   Future<void> _checkAuthStatus() async {
     try {
       final prefs = await SharedPreferences.getInstance();
+      
+      // Check for existing authentication data
       final token = prefs.getString('auth_token');
       final userData = prefs.getString('user_data');
       
@@ -63,7 +65,7 @@ class _AppWrapperState extends State<AppWrapper> {
           });
         }
       },
-      child: _isAuthenticated ? const HomePage() : const SelectCountryScreen(),
+      child: _isAuthenticated ? const HomePage() : const AuthWrapper(),
     );
   }
 }

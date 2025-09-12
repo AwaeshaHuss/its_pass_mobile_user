@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:itspass_user/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:itspass_user/features/authentication/presentation/bloc/auth_event.dart';
 import 'package:itspass_user/features/authentication/presentation/bloc/auth_state.dart';
@@ -20,7 +21,21 @@ class _AuthWrapperState extends State<AuthWrapper> {
   void initState() {
     super.initState();
     // Check authentication status when the widget initializes
-    context.read<AuthBloc>().add(const GetUserDataEvent());
+    _checkAuthenticationStatus();
+  }
+
+  void _checkAuthenticationStatus() async {
+    // Check if user has auth token first before calling GetUserDataEvent
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('auth_token');
+    
+    if (token != null) {
+      // User has token, try to get user data
+      context.read<AuthBloc>().add(const GetUserDataEvent());
+    } else {
+      // No token, user is not authenticated - don't call GetUserDataEvent
+      // The BlocBuilder will handle showing the PhoneAuthScreen
+    }
   }
 
   @override

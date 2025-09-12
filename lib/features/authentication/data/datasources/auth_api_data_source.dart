@@ -84,24 +84,11 @@ class AuthApiDataSourceImpl implements AuthApiDataSource {
       return userData;
     }
 
-    // If no local data or token, create a default guest user instead of throwing exception
-    // This prevents the "Server-allure(User not authenticated)" error
-    final guestUser = UserModel(
-      id: 'guest_user_${DateTime.now().millisecondsSinceEpoch}',
-      name: 'Guest User',
-      email: 'guest@itspass.com',
-      phone: '+1234567890',
-      blockStatus: 'no',
+    // If no local data or token, throw exception to show auth screens
+    throw const ServerException(
+      message: 'User not authenticated',
+      statusCode: '401',
     );
-
-    // Store the guest user data locally
-    await _storeUserData(guestUser);
-    
-    // Create a guest token
-    final guestToken = 'guest_token_${DateTime.now().millisecondsSinceEpoch}';
-    await _sharedPreferences.setString('auth_token', guestToken);
-
-    return guestUser;
   }
 
   @override
