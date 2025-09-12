@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uber_users_app/features/authentication/presentation/bloc/auth_bloc.dart';
@@ -21,10 +20,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
   void initState() {
     super.initState();
     // Check authentication status when the widget initializes
-    final currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser != null) {
-      context.read<AuthBloc>().add(const GetUserDataEvent());
-    }
+    context.read<AuthBloc>().add(const GetUserDataEvent());
   }
 
   @override
@@ -66,10 +62,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {
-                      final currentUser = FirebaseAuth.instance.currentUser;
-                      if (currentUser != null) {
-                        context.read<AuthBloc>().add(const GetUserDataEvent());
-                      }
+                      context.read<AuthBloc>().add(const GetUserDataEvent());
                     },
                     child: const Text('Retry'),
                   ),

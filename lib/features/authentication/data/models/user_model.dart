@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:uber_users_app/core/utils/typedef.dart';
 import 'package:uber_users_app/features/authentication/domain/entities/user_entity.dart';
 
@@ -39,6 +40,10 @@ class UserModel extends UserEntity {
       'blockStatus': blockStatus,
     };
   }
+
+  String toJson() => json.encode(toMap());
+
+  factory UserModel.fromJson(String source) => UserModel.fromMap(json.decode(source));
 
   @override
   UserModel copyWith({

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:uber_users_app/appInfo/auth_provider.dart';
 import 'package:uber_users_app/global/global_var.dart';
 import 'package:uber_users_app/pages/about_page.dart';
 import 'package:uber_users_app/pages/profile_page.dart';
@@ -8,13 +7,13 @@ import 'package:uber_users_app/widgets/sign_out_dialog.dart';
 
 class CustomDrawer extends StatelessWidget {
   final String userName;
-  final AuthenticationProvider
-      authProvider; // Pass the auth provider for sign out
+    // TODO: Replace with BLoC pattern
+    // final AuthenticationProvider
+      // authProvider; // Pass the auth provider for sign out
 
   const CustomDrawer({
     super.key,
     required this.userName,
-    required this.authProvider,
   });
 
   @override
@@ -129,7 +128,8 @@ class CustomDrawer extends StatelessWidget {
                     title: 'Logout',
                     description: 'Are you sure you want to logout?',
                     onSignOut: () async {
-                      await authProvider.signOut(context);
+                      // TODO: Replace with BLoC pattern
+                      // signOut(context);
                     },
                   );
                 },

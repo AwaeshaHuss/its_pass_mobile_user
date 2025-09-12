@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
-import 'package:provider/provider.dart';
-import 'package:uber_users_app/appInfo/auth_provider.dart';
 import 'package:uber_users_app/authentication/user_information_screen.dart';
 import 'package:uber_users_app/methods/common_methods.dart';
-import 'package:uber_users_app/pages/blocked_screen.dart';
 import 'package:uber_users_app/pages/home_page.dart';
 
 class OTPScreen extends StatefulWidget {
@@ -21,7 +18,7 @@ class _OTPScreenState extends State<OTPScreen> {
   String? smsCode;
   @override
   Widget build(BuildContext context) {
-    final authRepo = Provider.of<AuthenticationProvider>(context, listen: true);
+    // TODO: Replace with BLoC pattern for OTP verification
     return SafeArea(
       child: Scaffold(
         body: Center(
@@ -81,27 +78,8 @@ class _OTPScreenState extends State<OTPScreen> {
                   height: 25,
                 ),
 
-                authRepo.isLoading
-                    ? const CircularProgressIndicator(
-                        color: Colors.black,
-                      )
-                    : const SizedBox.shrink(),
-
-                authRepo.isSuccessful
-                    ? Container(
-                        height: 40,
-                        width: 40,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.green,
-                        ),
-                        child: const Icon(
-                          Icons.done,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                      )
-                    : const SizedBox.shrink(),
+                // TODO: Replace with BLoC state management
+                const SizedBox.shrink(),
 
                 const SizedBox(
                   height: 25,
@@ -149,52 +127,10 @@ class _OTPScreenState extends State<OTPScreen> {
     );
   }
 
-  void verifyOTP({required String smsCode}) {
-    final authProvider =
-        Provider.of<AuthenticationProvider>(context, listen: false);
-    authProvider.verifyOTP(
-      context: context,
-      verificationId: widget.verificationId,
-      smsCode: smsCode,
-      onSuccess: () async {
-        // 1. check database if the current user exist
-        bool userExits = await authProvider.checkUserExistById();
-        if (userExits) {
-          // 2. Check if the driver is blocked
-          bool isBlocked = await authProvider.checkIfUserIsBlocked();
-          // 2. get user data from database
-
-          if (isBlocked) {
-            // Navigate to Block Screen if blocked
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const BlockedScreen(),
-              ),
-            );
-          } else {
-            await authProvider.getUserDataFromFirebaseDatabase();
-            // 4. Check if driver fields are filled
-            bool isUserComplete = await authProvider.checkUserFieldsFilled();
-
-            if (isUserComplete) {
-              // Navigate to dashboard if profile is complete
-              navigate(isSingedIn: true);
-            } else {
-              // Navigate to driver registration if profile is incomplete
-              navigate(isSingedIn: false);
-              commonMethods.displaySnackBar(
-                "Fill your missing information!",
-                context,
-              );
-            }
-          }
-        } else {
-          // navigate to user information screen
-          navigate(isSingedIn: false);
-        }
-      },
-    );
+  void verifyOTP({required String smsCode}) async {
+    // TODO: Implement OTP verification with BLoC pattern
+    // For now, navigate to user information screen
+    navigate(isSingedIn: false);
   }
 
   void navigate({required bool isSingedIn}) {

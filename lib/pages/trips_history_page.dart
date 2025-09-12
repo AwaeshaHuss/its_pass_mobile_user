@@ -1,5 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
+// Firebase imports removed - using API-based services
 import 'package:flutter/material.dart';
 
 class TripsHistoryPage extends StatefulWidget {
@@ -10,8 +9,14 @@ class TripsHistoryPage extends StatefulWidget {
 }
 
 class _TripsHistoryPageState extends State<TripsHistoryPage> {
-  final completedTripRequestsOfCurrentUser =
-      FirebaseDatabase.instance.ref().child("tripRequest");
+  // TODO: Replace with API-based trip history service
+  List<Map<String, dynamic>> tripHistory = [];
+
+  Future<List<Map<String, dynamic>>> _loadTripHistory() async {
+    // TODO: Implement API call to fetch trip history
+    await Future.delayed(const Duration(seconds: 1)); // Simulate API call
+    return tripHistory;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,133 +41,103 @@ class _TripsHistoryPageState extends State<TripsHistoryPage> {
           ),
         ),
       ),
-      body: StreamBuilder(
-        stream: completedTripRequestsOfCurrentUser.onValue,
-        builder:
-            (BuildContext context, AsyncSnapshot<DatabaseEvent> snapshotData) {
-          if (snapshotData.hasError) {
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: _loadTripHistory(),
+        builder: (BuildContext context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+          if (snapshot.hasError) {
             return const Center(
               child: Text(
-                "Error Occurred.",
+                "Error loading trip history.",
                 style: TextStyle(color: Colors.black),
               ),
             );
           }
 
-          if (!snapshotData.hasData) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
-              child:
-                  CircularProgressIndicator(), // Show progress indicator while loading
+              child: CircularProgressIndicator(),
             );
           }
 
-          if (snapshotData.data!.snapshot.value == null) {
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(
               child: Text(
-                "No record found.",
+                "No trip history found.",
                 style: TextStyle(color: Colors.black),
               ),
             );
           }
 
-          final snapshotValue = snapshotData.data!.snapshot.value;
-          if (snapshotValue is Map) {
-            final Map<String, dynamic> dataTrips =
-                snapshotValue.cast<String, dynamic>();
-            final List<Map<String, dynamic>> tripsList = [];
-            dataTrips.forEach((key, value) {
-              if (value is Map) {
-                tripsList.add({"key": key, ...value});
-              }
-            });
-
-            return ListView.builder(
-              padding: EdgeInsets.all(5),
-              shrinkWrap: true,
-              itemCount: tripsList.length,
-              itemBuilder: (context, index) {
-                if (tripsList[index]["status"] != null &&
-                    tripsList[index]["status"] == "ended" &&
-                    tripsList[index]["userID"] ==
-                        FirebaseAuth.instance.currentUser!.uid) {
-                  return Card(
-                    color: Colors.white,
-                    elevation: 10,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+          final tripsList = snapshot.data!;
+          return ListView.builder(
+            padding: const EdgeInsets.all(5),
+            shrinkWrap: true,
+            itemCount: tripsList.length,
+            itemBuilder: (context, index) {
+              final trip = tripsList[index];
+              return Card(
+                color: Colors.white,
+                elevation: 10,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20, vertical: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Pickup - fare amount
+                      Row(
                         children: [
-                          // Pickup - fare amount
-                          Row(
-                            children: [
-                              Image.asset(
-                                'assets/images/initial.png',
-                                height: 16,
-                                width: 16,
-                              ),
-                              const SizedBox(width: 18),
-                              Expanded(
-                                child: Text(
-                                  tripsList[index]["pickUpAddress"].toString(),
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    //color: Colors.white38,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              Text(
-                                "\Rs " +
-                                    tripsList[index]["fareAmount"].toString(),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  //color: Colors.white,
-                                ),
-                              ),
-                            ],
+                          Image.asset(
+                            'assets/images/initial.png',
+                            height: 16,
+                            width: 16,
                           ),
-                          const SizedBox(height: 8),
-                          // Dropoff
-                          Row(
-                            children: [
-                              Image.asset(
-                                'assets/images/final.png',
-                                height: 16,
-                                width: 16,
+                          const SizedBox(width: 18),
+                          Expanded(
+                            child: Text(
+                              trip["pickUpAddress"]?.toString() ?? "Unknown pickup",
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 18,
                               ),
-                              const SizedBox(width: 18),
-                              Expanded(
-                                child: Text(
-                                  tripsList[index]["dropOffAddress"].toString(),
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    //color: Colors.white38,
-                                  ),
-                                ),
-                              ),
-                            ],
+                            ),
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            "Rs ${trip["fareAmount"]?.toString() ?? "0"}",
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                  );
-                } else {
-                  return Container();
-                }
-              },
-            );
-          } else {
-            return const Center(
-              child: Text(
-                "Invalid data format.",
-                style: TextStyle(color: Colors.white),
-              ),
-            );
-          }
+                      const SizedBox(height: 8),
+                      // Dropoff
+                      Row(
+                        children: [
+                          Image.asset(
+                            'assets/images/final.png',
+                            height: 16,
+                            width: 16,
+                          ),
+                          const SizedBox(width: 18),
+                          Expanded(
+                            child: Text(
+                              trip["dropOffAddress"]?.toString() ?? "Unknown destination",
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
         },
       ),
     );

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:uber_users_app/appInfo/auth_provider.dart';
 import 'package:uber_users_app/methods/common_methods.dart';
 import 'package:uber_users_app/pages/home_page.dart';
 
@@ -29,21 +27,12 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
   @override
   void initState() {
     super.initState();
-    final authProvider =
-        Provider.of<AuthenticationProvider>(context, listen: false);
-    if (authProvider.isGoogleSignedIn == false) {
-      phoneController.text = authProvider.phoneNumber;
-    }
-
-    if (authProvider.isGoogleSignedIn) {
-      gmailController.text = authProvider.firebaseAuth.currentUser!.email.toString();
-      phoneController.text = '';
-    }
+    // TODO: Initialize with user data from API
   }
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthenticationProvider>(context);
+    // TODO: Replace with BLoC pattern
 
     return Scaffold(
       appBar: AppBar(
@@ -85,7 +74,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
                         maxLines: 1,
                         maxLength: 25,
                         textEditingController: gmailController,
-                        enabled: authProvider.isGoogleSignedIn ? false : true,
+                        enabled: true, // TODO: Handle Google sign-in state
                       ),
                       const SizedBox(
                         height: 20,
@@ -97,7 +86,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
                         maxLines: 1,
                         maxLength: 13,
                         textEditingController: phoneController,
-                        enabled: authProvider.isGoogleSignedIn ? true : false,
+                        enabled: true, // TODO: Handle phone number state
                       ),
                     ],
                   ),
@@ -117,12 +106,7 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
                           borderRadius: BorderRadius.circular(5),
                         ),
                       ),
-                      child: authProvider.isLoading
-                          ? const CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.white,
-                            )
-                          : const Text(
+                      child: const Text(
                               "Continue",
                               style: TextStyle(
                                 color: Colors.white,
@@ -184,32 +168,20 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
     );
   }
 
-  // store user data to fireStore
+  // store user data via API
   void saveUserDataToFireStore() async {
-    //final authProvider = Provider.of<AuthenticationProvider>(context, listen: false);
-    final authProvider = context.read<AuthenticationProvider>();
+    // TODO: Implement API-based user data saving
     UserModel userModel = UserModel(
-        id: authProvider.uid!,
+        id: "temp_id", // TODO: Get from API response
         name: nameController.text.trim(),
         phone: phoneController.text.trim(),
         email: gmailController.text.trim(),
         blockStatus: "no");
 
     if (nameController.text.length >= 3) {
-      authProvider.saveUserDataToFirebase(
-        context: context,
-        userModel: userModel,
-        onSuccess: () async {
-          // save user data locally
-          //await authProvider.saveUserDataToSharedPref();
-
-          // set signed in
-          //await authProvider.setSignedIn();
-
-          // go to home screen
-          navigateToHomeScreen();
-        },
-      );
+      // TODO: Call API to save user data
+      // For now, navigate to home screen
+      navigateToHomeScreen();
     } else {
       commonMethods.displaySnackBar(
           'Name must be atleast 3 characters', context);

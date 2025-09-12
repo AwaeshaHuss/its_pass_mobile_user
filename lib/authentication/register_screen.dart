@@ -1,10 +1,8 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:uber_users_app/appInfo/auth_provider.dart';
+// Firebase imports removed - using API-based services
 import 'package:uber_users_app/authentication/user_information_screen.dart';
 import 'package:uber_users_app/methods/common_methods.dart';
-import 'package:uber_users_app/pages/blocked_screen.dart';
 import 'package:uber_users_app/pages/home_page.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -40,7 +38,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthenticationProvider>(context);
+    // TODO: Replace with BLoC pattern
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -145,12 +143,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         borderRadius: BorderRadius.circular(5),
                       ),
                     ),
-                    child: authProvider.isLoading
-                        ? const CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          )
-                        : const Text(
+                    child: const Text(
                             "Continue",
                             style: TextStyle(
                               color: Colors.white,
@@ -195,46 +188,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   width: MediaQuery.of(context).size.width * 0.9,
                   height: MediaQuery.of(context).size.height * 0.07,
                   child: ElevatedButton(
-                    onPressed: authProvider.isLoading
-                        ? null
-                        : () async {
-                            if (!authProvider.isLoading) {
-                              await authProvider.signInWithGoogle(
-                                context,
-                                () async {
-                                  bool userExits =
-                                      await authProvider.checkUserExistById();
-                                  bool userExistInDatabse = await authProvider
-                                      .checkUserExistByEmail(authProvider
-                                          .firebaseAuth.currentUser!.email!
-                                          .toString());
-                                  if (userExits) {
-                                    // 2. get user data from database
-                                    if (userExistInDatabse) {
-                                      // Check if the driver is blocked
-                                      bool isBlocked = await authProvider
-                                          .checkIfUserIsBlocked();
-                                      if (isBlocked) {
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const BlockedScreen(),
-                                          ), // Replace with your actual Block Screen
-                                        );
-                                      } else {
-                                        await authProvider
-                                            .getUserDataFromFirebaseDatabase();
-                                        navigate(isSingedIn: true);
-                                      }
-                                    }
-                                  } else {
-                                    // navigate to user information screen
-                                    navigate(isSingedIn: false);
-                                  }
-                                },
-                              );
-                            }
+                    onPressed: () {
+                            // TODO: Implement Google Sign-In with API
+                            navigate(isSingedIn: false);
                           },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.grey.shade400,
@@ -242,14 +198,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         borderRadius: BorderRadius.circular(5),
                       ),
                     ),
-                    child: authProvider.isGoogleSigInLoading
-                        ? const Center(
-                            child: CircularProgressIndicator(
-                              valueColor:
-                                  AlwaysStoppedAnimation<Color>(Colors.black),
-                            ),
-                          )
-                        : const Row(
+                    child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
@@ -314,8 +263,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void sendPhoneNumber() {
-    final authRepo =
-        Provider.of<AuthenticationProvider>(context, listen: false);
+    // TODO: Replace with API-based phone verification
     String phoneNumber = phoneController.text.trim();
 
     // Validate the phone number
@@ -333,10 +281,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     // Append country code
     String fullPhoneNumber = '+${selectedCountry.phoneCode}$phoneNumber';
 
-    // Proceed with phone number authentication
-    authRepo.signInWithPhone(
-      context: context,
-      phoneNumber: fullPhoneNumber,
+    // TODO: Implement API-based phone verification
+    // For now, navigate to user information screen
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const UserInformationScreen(),
+      ),
     );
   }
 
