@@ -162,14 +162,6 @@ class CustomDrawer extends StatelessWidget {
                   },
                 ),
                 
-                _buildDrawerItem(
-                  icon: Icons.help_outline,
-                  title: localizations.helpSupport,
-                  onTap: () {
-                    Navigator.pop(context);
-                    // TODO: Implement help functionality
-                  },
-                ),
                 
                 _buildDrawerItem(
                   icon: Icons.info_outline,
