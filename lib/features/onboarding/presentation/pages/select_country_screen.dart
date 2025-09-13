@@ -25,12 +25,14 @@ class _SelectCountryScreenState extends State<SelectCountryScreen> {
       'name': 'Jordan',
       'nameAr': 'الأردن',
       'flag': '🇯🇴',
+      'phoneCode': '962',
     },
     {
       'code': 'SY',
       'name': 'Syria',
       'nameAr': 'سوريا',
       'flag': '🇸🇾',
+      'phoneCode': '963',
     },
   ];
 
@@ -72,6 +74,10 @@ class _SelectCountryScreenState extends State<SelectCountryScreen> {
     await prefs.setString('selected_country', _selectedCountry);
     await prefs.setString('language_code', _selectedLanguage);
     await prefs.setBool('country_selected', true);
+    
+    // Save phone code for the selected country
+    final selectedCountryData = _countries.firstWhere((country) => country['code'] == _selectedCountry);
+    await prefs.setString('selected_phone_code', selectedCountryData['phoneCode']!);
 
     // Update language provider
     if (mounted) {

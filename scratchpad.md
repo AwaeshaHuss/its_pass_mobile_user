@@ -1,6 +1,47 @@
 # Scratchpad
 
-## Current Task: Fix Authentication Data Clearing Issue - COMPLETED ✅
+## Current Task: Fix Flag Display Cropping Issue - COMPLETED ✅
+
+### Task Overview
+Fixed flag emoji cropping issue in both select country screen and phone authentication screen by implementing proper flag containers with responsive sizing.
+
+### Problem Identified
+- Flag emojis were using fixed font sizes (24.sp and AppDimensions.fontSizeXL)
+- This caused cropping on different devices and screen densities
+- Flags appeared cut off in the phone number input field
+
+### Solution Implemented
+- Created proper flag containers with fixed dimensions (32.w x 24.h for country selection, 28.w x 20.h for phone input)
+- Used FittedBox with BoxFit.contain to prevent cropping
+- Added subtle borders and rounded corners for better visual appearance
+- Implemented responsive sizing using flutter_screenutil units
+
+### Technical Changes
+- **File Modified**: `lib/features/onboarding/presentation/pages/select_country_screen.dart`
+- **File Modified**: `lib/features/authentication/presentation/pages/phone_auth_screen.dart`
+- **Branch**: `fix-flag-display-cropping`
+
+### Flag Container Implementation
+- Container with fixed responsive dimensions
+- ClipRRect for rounded corners
+- FittedBox with BoxFit.contain to prevent cropping
+- Reduced font size with height: 1.0 for better fitting
+- Subtle border for visual definition
+
+### Results
+- ✅ Flags now display properly without cropping on all devices
+- ✅ Consistent flag appearance across different screen sizes
+- ✅ Better visual design with containers and borders
+- ✅ Responsive sizing using flutter_screenutil
+
+### Country Code Fix
+- Added phone codes to country data in select_country_screen.dart
+- Implemented proper country initialization in phone_auth_screen.dart
+- Added SharedPreferences persistence for selected phone code
+- Enhanced country code display with highlighted container
+- Country code now loads from saved preferences and displays correctly
+
+## Previous Task: Fix Authentication Data Clearing Issue - COMPLETED ✅
 
 ### Task Overview
 Resolved "Something went wrong - Unable to load user data" error caused by AppWrapper clearing authentication data on every app startup.
