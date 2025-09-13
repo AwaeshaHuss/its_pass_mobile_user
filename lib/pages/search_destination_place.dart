@@ -11,7 +11,9 @@ import 'package:itspass_user/models/prediction_model.dart';
 import 'package:itspass_user/widgets/prediction_place_ui.dart';
 
 class SearchDestinationPlace extends StatefulWidget {
-  const SearchDestinationPlace({super.key});
+  final bool isPickupLocation;
+  
+  const SearchDestinationPlace({super.key, this.isPickupLocation = false});
 
   @override
   State<SearchDestinationPlace> createState() => _SearchDestinationPlaceState();
@@ -60,13 +62,40 @@ class _SearchDestinationPlaceState extends State<SearchDestinationPlace> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    String userAddress = Provider.of<AppInfoClass>(context, listen: false)
-            .pickUpLocation!
-            .humanReadableAddress ??
-        '';
+  void initState() {
+    super.initState();
+    
+    // Only populate pickup field if this is NOT for pickup location selection
+    if (!widget.isPickupLocation) {
+      String? userAddress = Provider.of<AppInfoClass>(context, listen: false)
+                  .pickUpLocation !=
+              null
+          ? (Provider.of<AppInfoClass>(context, listen: false)
+                      .pickUpLocation!
+                      .placeName!
+                      .length >
+                  35
+              ? "${Provider.of<AppInfoClass>(context, listen: false).pickUpLocation!.placeName!.substring(0, 35)}..."
+              : Provider.of<AppInfoClass>(context, listen: false)
+                  .pickUpLocation!
+                  .placeName)
+          : 'Fetching Your Current Location.';
+      
+      pickUpTextEditingController.text = userAddress ?? '';
+    }
+  }
 
-    pickUpTextEditingController.text = userAddress;
+  @override
+  Widget build(BuildContext context) {
+    // Only set pickup address if this is NOT for pickup location selection
+    if (!widget.isPickupLocation) {
+      String userAddress = Provider.of<AppInfoClass>(context, listen: false)
+              .pickUpLocation!
+              .humanReadableAddress ??
+          '';
+
+      pickUpTextEditingController.text = userAddress;
+    }
     mq = MediaQuery.sizeOf(context);
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
@@ -82,7 +111,7 @@ class _SearchDestinationPlaceState extends State<SearchDestinationPlace> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          "Set Dropoff Location",
+          widget.isPickupLocation ? "Set Pickup Location" : "Set Dropoff Location",
           style: AppTheme.headingStyle.copyWith(
             color: Colors.white,
             fontSize: 18.sp,
@@ -183,7 +212,7 @@ class _SearchDestinationPlaceState extends State<SearchDestinationPlace> {
                           ),
                         ),
                         child: TextField(
-                          controller: destinationTextEditingController,
+                          controller: widget.isPickupLocation ? pickUpTextEditingController : destinationTextEditingController,
                           onChanged: (value) {
                             searchLocation(value);
                             // Clear selection when user types
@@ -196,14 +225,18 @@ class _SearchDestinationPlaceState extends State<SearchDestinationPlace> {
                           },
                           style: AppTheme.bodyStyle,
                           decoration: InputDecoration(
-                            hintText: "Where to? (e.g., تاج مول)",
+                            hintText: widget.isPickupLocation 
+                                ? "Search pickup location..." 
+                                : "Where to? (e.g., تاج مول)",
                             hintStyle: AppTheme.bodyStyle.copyWith(
                               color: AppTheme.textSecondaryColor,
                             ),
                             border: InputBorder.none,
                             isDense: true,
                             contentPadding: EdgeInsets.zero,
-                            suffixIcon: destinationTextEditingController.text.isNotEmpty
+                            suffixIcon: (widget.isPickupLocation 
+                                    ? pickUpTextEditingController.text.isNotEmpty 
+                                    : destinationTextEditingController.text.isNotEmpty)
                                 ? IconButton(
                                     icon: Icon(
                                       Icons.clear,
@@ -211,7 +244,11 @@ class _SearchDestinationPlaceState extends State<SearchDestinationPlace> {
                                       size: AppDimensions.iconSizeS,
                                     ),
                                     onPressed: () {
-                                      destinationTextEditingController.clear();
+                                      if (widget.isPickupLocation) {
+                                        pickUpTextEditingController.clear();
+                                      } else {
+                                        destinationTextEditingController.clear();
+                                      }
                                       setState(() {
                                         dropOffPredictionsPlacesList.clear();
                                         selectedDestinationPlaceId = null;

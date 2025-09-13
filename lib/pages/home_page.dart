@@ -13,6 +13,7 @@ import 'package:itspass_user/appInfo/app_info.dart';
 import 'package:itspass_user/authentication/register_screen.dart';
 import 'package:itspass_user/core/constants/app_dimensions.dart';
 import 'package:itspass_user/core/theme/app_theme.dart';
+import 'package:itspass_user/models/address_models.dart';
 import 'package:itspass_user/pages/search_destination_place.dart';
 import 'package:itspass_user/widgets/custome_drawer.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -743,11 +744,30 @@ class _HomePageState extends State<HomePage> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           // From Location
-                          _buildLocationRow(
-                            icon: Icons.radio_button_checked,
-                            iconColor: AppTheme.primaryColor,
-                            label: "From",
-                            address: userAddress ?? 'Unknown location',
+                          GestureDetector(
+                            onTap: () async {
+                              var responseFromSearchPage = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (c) =>
+                                          const SearchDestinationPlace(isPickupLocation: true)));
+
+                              if (responseFromSearchPage != null && responseFromSearchPage is AddressModel) {
+                                // Handle pickup location selection
+                                setState(() {
+                                  // Update pickup location in provider
+                                  Provider.of<AppInfoClass>(context, listen: false)
+                                      .updatePickUpLocation(responseFromSearchPage);
+                                });
+                              }
+                            },
+                            child: _buildLocationRow(
+                              icon: Icons.radio_button_checked,
+                              iconColor: AppTheme.primaryColor,
+                              label: "From",
+                              address: userAddress ?? 'Unknown location',
+                              isClickable: true,
+                            ),
                           ),
 
                           SizedBox(height: AppDimensions.paddingM),
