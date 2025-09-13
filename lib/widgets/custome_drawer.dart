@@ -4,6 +4,7 @@ import 'package:itspass_user/core/constants/app_dimensions.dart';
 import 'package:itspass_user/core/theme/app_theme.dart';
 import 'package:itspass_user/generated/l10n/app_localizations.dart';
 import 'package:itspass_user/pages/about_page.dart';
+import 'package:itspass_user/pages/privacy_policy_page.dart';
 import 'package:itspass_user/pages/profile_page.dart';
 import 'package:itspass_user/pages/settings_page.dart';
 import 'package:itspass_user/pages/trips_history_page.dart';
@@ -158,7 +159,10 @@ class CustomDrawer extends StatelessWidget {
                   title: localizations.privacyPolicy,
                   onTap: () {
                     Navigator.pop(context);
-                    // TODO: Implement privacy functionality
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const PrivacyPolicyPage()),
+                    );
                   },
                 ),
                 
